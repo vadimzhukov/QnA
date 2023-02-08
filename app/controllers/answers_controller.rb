@@ -27,9 +27,13 @@ class AnswersController < ApplicationController
     else
       render :edit
     end
-
   end
 
+  def destroy
+    @answer.delete
+    redirect_to @question
+  end 
+  
   private
 
   def load_answer
