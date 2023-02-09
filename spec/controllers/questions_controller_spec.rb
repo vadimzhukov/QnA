@@ -4,7 +4,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3)}
+    let(:questions) { create_list(:question, 3) }
     before { get :index }
 
     it 'populates array of all questions' do
@@ -12,7 +12,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'renders index view with all questions' do
-     expect(response).to render_template :index
+      expect(response).to render_template :index
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
     end
-    it 'renders edit view' do 
+    it 'renders edit view' do
       expect(response).to render_template :edit
     end
   end
@@ -64,7 +64,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       it 'not save question to database' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.not_to change(Question, :count)
+        expect do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+        end.not_to change(Question, :count)
       end
       it 'renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
@@ -108,11 +110,12 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) { create(:question)}
-    it 'assigns question to @question' do 
+    let!(:question) { create(:question) }
+    it 'assigns question to @question' do
       delete :destroy, params: { id: question }
       expect(assigns(:question)).to eq question
     end
+
     it 'deletes question from database' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
     end
