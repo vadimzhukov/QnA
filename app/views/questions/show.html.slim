@@ -9,5 +9,6 @@ p=render partial: 'questions/answer', collection: @answers
 
 div
 =form_with(model: [@question, @answer], data: {turbo: false}) do |f|
+  =f.label "New answer:"
   =f.text_area :body
   p =f.submit "Submit answer"

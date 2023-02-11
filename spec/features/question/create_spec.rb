@@ -5,19 +5,25 @@ feature "Create question", "
   As unauthenticated user
   I can ask a question
 " do
+
+  given(:user) { create(:user) }
+  background do
+    login(user)
+  end
+
   scenario "user asks question with correct body" do
-    visit "/questions"
+    
     click_on "Ask question"
 
-    fill_in "question_title", with: "Test question title"
-    fill_in "question_body", with: "Test question body"
+    fill_in "Title", with: "Test question title"
+    fill_in "Body", with: "Test question body"
     click_on "Ask"
 
     expect(page).to have_content "Test question title"
     expect(page).to have_content "Test question body"
   end
+
   scenario "user asks question with invalid empty body" do
-    visit "/questions"
     click_on "Ask question"
 
     fill_in "question_title", with: "Test question title"

@@ -6,10 +6,15 @@ feature "create answer on question page", "
   I can create answer on question page
 " do
 
+  given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario "create answer with valid body" do
+  background do
+    login(user)
     visit question_path(question)
+  end
+
+  scenario "create answer with valid body" do    
     fill_in "answer_body", with: "Test answer body"
     click_on "Submit answer"
 
@@ -19,7 +24,6 @@ feature "create answer on question page", "
   end
 
   scenario "create answer with invalid empty body" do
-    visit question_path(question)
     click_on "Submit answer"
 
     expect(page).to have_content "Answer was not saved"

@@ -12,6 +12,9 @@
 
   <body>
     <nav>
+      <% if user_signed_in? %>
+        <%= button_to "Log out", destroy_user_session_path, method: :delete %>
+      <% end %>
       <% flash.each do |type, msg| %>
         <div class="<%="flash-#{type.to_s}"%>">
           <%= msg %>
