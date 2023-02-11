@@ -5,7 +5,10 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = @question.answers.new
+    @answers = @question.answers.all
+  end
 
   def new
     @question = Question.new
@@ -16,8 +19,9 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: "The question was succesfully saved"
     else
+      flash.now[:alert] = "Error in question. The question was not saved"
       render :new
     end
   end

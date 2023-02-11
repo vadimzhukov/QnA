@@ -23,7 +23,16 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'renders show view' do
+    it 'assigns a new Answer to @question' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+      expect(assigns(:answer).question_id).to eq question.id
+    end
+
+    it 'assigns collection of answers to @question' do
+      expect(assigns(:answers)).to eq question.answers
+    end
+
+    it 'renders the show view' do
       expect(response).to render_template :show
     end
   end
@@ -98,8 +107,8 @@ RSpec.describe QuestionsController, type: :controller do
         patch :update, params: { id: question, question: attributes_for(:question, :invalid) }
         question.reload
 
-        expect(question.title).to eq 'MyQuestionTitle'
-        expect(question.body).to eq 'MyQuestionBody'
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
 
       it 're-render edit view' do

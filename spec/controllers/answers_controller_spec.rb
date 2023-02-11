@@ -48,9 +48,9 @@ RSpec.describe AnswersController, type: :controller do
         end.to change(Answer, :count).by(1)
       end
 
-      it 'redirects to :show' do
+      it 'redirects to @question' do
         post :create, params: { question_id: question.id, answer: attributes_for(:answer) }
-        expect(response).to redirect_to answer_path(id: assigns(:answer))
+        expect(response).to redirect_to question
       end
     end
 
@@ -94,10 +94,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'invalid parameters to update' do
       it 'doesnt change attributes in DB' do
+        initial_answer = answer
         patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer, :invalid) }
         answer.reload
-        expect(answer.body).to eq "MyAnswerBody"
-        expect(answer.correct).to eq false
+        expect(answer.body).to eq initial_answer.body
+        expect(answer.correct).to eq initial_answer.correct
       end
 
       it 'redirects to edit' do

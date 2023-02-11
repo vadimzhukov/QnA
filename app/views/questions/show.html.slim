@@ -1,0 +1,13 @@
+
+h3 Question #{@question.id}
+h2=@question.title
+p=@question.body
+
+h3 Answers to the question:
+ul
+p=render partial: 'questions/answer', collection: @answers
+
+div
+=form_with(model: [@question, @answer], data: {turbo: false}) do |f|
+  =f.text_area :body
+  p =f.submit "Submit answer"

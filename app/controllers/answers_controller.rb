@@ -13,9 +13,10 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     if @answer.save
-      redirect_to answer_path(id: @answer.id)
+      redirect_to question_path(@question), notice: "Answer successfully created."
     else
-      render :new
+      flash[:alert] = "Error. Answer was not saved."
+      redirect_to question_path(@question)
     end
   end
 

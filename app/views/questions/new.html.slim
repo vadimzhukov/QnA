@@ -1,0 +1,9 @@
+h1 Ask your question
+=form_with(model: @question, data: {turbo: false}) do |f|
+  p
+  =f.label :title
+  =f.text_field :title
+  p
+  =f.label :body
+  =f.text_area :body
+  p=f.submit "Ask"
