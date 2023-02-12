@@ -6,11 +6,12 @@ feature "See a list of questions", "
   I can see a list of existed questions
 " do
 
+  given!(:user) { create(:user) }
   given!(:questions) { create_list(:question, 5) }
 
   scenario "user goes on question page to see the list of all questions" do
-    visit "/questions"
-
+    login(user)
+    visit questions_path
     questions.each { |q| expect(page).to have_content q.title }
   end
 end
