@@ -5,7 +5,6 @@ feature "user signs in with Email and password", "
   As unathenticated user,
   I can sign in
 " do
-
   given(:user) { create(:user) }
 
   background do

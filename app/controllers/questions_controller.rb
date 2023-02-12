@@ -19,7 +19,6 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def create
-    
     @question = current_user.questions.new(question_params)
     if @question.save
       redirect_to @question, notice: "The question was succesfully saved"
@@ -38,8 +37,8 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-      @question.destroy
-      redirect_to questions_path
+    @question.destroy
+    redirect_to questions_path
   end
 
   private

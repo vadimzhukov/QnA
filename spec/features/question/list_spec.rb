@@ -5,7 +5,6 @@ feature "See a list of questions", "
   As unathenticated user,
   I can see a list of existed questions
 " do
-
   given!(:user) { create(:user) }
   given!(:questions) { create_list(:question, 5) }
 

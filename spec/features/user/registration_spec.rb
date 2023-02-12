@@ -5,7 +5,6 @@ feature "Register new user", "
   As an unauthenticated user,
   I can register
 " do
-
   given(:users) { create_list(:user, 5) }
 
   background do

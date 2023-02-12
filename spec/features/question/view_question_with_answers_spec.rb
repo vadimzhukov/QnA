@@ -5,11 +5,8 @@ feature "show question with answers", "
   As an unauthenticated user,
   I can see page of question and its answers
 " do
-
   given!(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 5, {question_id: question.id}) }
-
-
+  given!(:answers) { create_list(:answer, 5, { question_id: question.id }) }
 
   scenario "Look at the question page with answers listed under" do
     visit question_path(question)

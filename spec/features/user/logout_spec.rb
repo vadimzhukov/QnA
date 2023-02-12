@@ -5,9 +5,8 @@ feature "User can log out to end up session", "
   As authenticated user,
   I can log out
 " do
-
   given(:user) { create(:user) }
-  
+
   describe "Authenticated user" do
     background do
       login(user)
@@ -15,7 +14,6 @@ feature "User can log out to end up session", "
     end
 
     scenario "logs out" do
-      
       click_button "Log out"
 
       expect(page).to have_content "Log in"
@@ -24,7 +22,7 @@ feature "User can log out to end up session", "
       expect(page).to have_content "Forgot your password?"
     end
   end
-  
+
   scenario "Unathenticated user can not Log out" do
     visit questions_path
     expect(page).not_to have_content "Log out"

@@ -5,7 +5,6 @@ feature "create answer on question page", "
   As an unauthenticated user,
   I can create answer on question page
 " do
-
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
@@ -14,7 +13,7 @@ feature "create answer on question page", "
     visit question_path(question)
   end
 
-  scenario "create answer with valid body" do    
+  scenario "create answer with valid body" do
     fill_in "answer_body", with: "Test answer body"
     click_on "Submit answer"
 

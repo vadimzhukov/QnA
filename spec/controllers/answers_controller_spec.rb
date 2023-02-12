@@ -20,7 +20,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-  
     before { get :edit, params: { id: answer, question_id: question } }
 
     it 'assigns the requested answer to @answer of @question' do
@@ -50,7 +49,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'doesnt add answer to database' do
         expect do
           post :create,
-              params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }
+               params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }
         end.not_to change(Answer, :count)
       end
 

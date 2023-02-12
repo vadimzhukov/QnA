@@ -5,14 +5,12 @@ feature "Create question", "
   As unauthenticated user
   I can ask a question
 " do
-
   given(:user) { create(:user) }
   background do
     login(user)
   end
 
   scenario "user asks question with correct body" do
-    
     click_on "Ask question"
 
     fill_in "Title", with: "Test question title"
@@ -33,5 +31,3 @@ feature "Create question", "
     expect(page).to have_content "Error in question"
   end
 end
-
-
