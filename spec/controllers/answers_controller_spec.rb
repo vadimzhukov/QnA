@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer) }
-
-  let(:user) { create(:user) }
-  before { login(user) }
+  let!(:user) { create(:user) }
+  let!(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, user: user, question: question) }
 
   describe 'GET #new' do
+    before { login(user) }
+
     before { get :new, params: { question_id: question } }
 
     it 'assigns a new Answer to @answer of @question' do
@@ -20,6 +20,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
+    before { login(user) }
+
     before { get :edit, params: { id: answer, question_id: question } }
 
     it 'assigns the requested answer to @answer of @question' do
@@ -32,11 +34,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
     context 'valid answer parameters' do
       it 'adds answer to database' do
-        expect do
-          post :create, params: { question_id: question.id, answer: attributes_for(:answer) }
-        end.to change(Answer, :count).by(1)
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id } }.to change(Answer, :count).by(1)
       end
 
       it 'redirects to @question' do
@@ -61,6 +62,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    before { login(user) }
+
     context 'valid parameters to update' do
       it 'assigns edited answer to @answer' do
         patch :update, params: { id: answer, answer: attributes_for(:answer), question_id: question }
@@ -100,8 +103,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) { create(:question) }
-    let!(:answer) { create(:answer) }
+    # let!(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    before { login(user) }
 
     it 'deletes @answer form DB' do
       expect { delete :destroy, params: { id: answer, question_id: question.id } }.to change(Answer, :count).by(-1)

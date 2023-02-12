@@ -1,16 +1,16 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, only: [:show, :edit, :update, :destroy]
-  before_action :load_question, only: [:create, :update, :destroy]
+  before_action :load_question, only: [:create, :update]
 
   def new
-    @answer = Answer.new
+    @answer = current_user.answers.new
   end
 
   def edit; end
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = current_user.answers.new(answer_params)
     if @answer.save
       redirect_to question_path(@question), notice: "Answer successfully created."
     else
@@ -28,7 +28,8 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.delete
+    @question = @answer.question
+    @answer.destroy
     redirect_to @question
   end
 

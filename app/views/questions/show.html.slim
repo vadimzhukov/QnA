@@ -1,3 +1,5 @@
+=render "shared/errors", resource: @question
+=render "shared/errors", resource: @answer
 
 h3 Question #{@question.id}
 h2=@question.title
@@ -11,4 +13,5 @@ div
 =form_with(model: [@question, @answer], data: {turbo: false}) do |f|
   =f.label "New answer:"
   =f.text_area :body
+  =f.hidden_field :question_id, value: @question.id
   p =f.submit "Submit answer"
