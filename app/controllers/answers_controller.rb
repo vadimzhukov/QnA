@@ -10,7 +10,8 @@ class AnswersController < ApplicationController
   def edit; end
 
   def create
-    @answer = current_user.answers.new(answer_params)
+    @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
     if @answer.save
       redirect_to question_path(@question), notice: "Answer successfully created."
     else
@@ -44,6 +45,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, :question_id)
+    params.require(:answer).permit(:body, :correct)
   end
 end

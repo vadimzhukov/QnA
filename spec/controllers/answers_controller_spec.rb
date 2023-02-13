@@ -35,6 +35,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     before { login(user) }
+    
     context 'valid answer parameters' do
       it 'adds answer to database' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id } }.to change(Answer, :count).by(1)
