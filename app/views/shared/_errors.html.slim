@@ -1,4 +1,5 @@
 -if resource&.errors.present?
+  binding.pry
   b ="#{resource.errors.count} error(s) detected:"
   ul
     -resource.errors.full_messages.each do |message|

@@ -13,7 +13,7 @@ feature "create answer on question page", "
     visit question_path(question)
   end
 
-  scenario "create answer with valid body" do
+  scenario "create answer with valid body", js: true do
     fill_in "answer_body", with: "Test answer body"
     click_on "Submit answer"
 

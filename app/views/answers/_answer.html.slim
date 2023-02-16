@@ -2,4 +2,4 @@ li
   =answer.body
   -if current_user
     -if answer.user_id == current_user.id 
-      =button_to "delete", answer_path(answer), method: :delete, data: {turbo: false}, id: answer.id
+      =button_to "delete", answer_path(answer), method: :delete, id: answer.id

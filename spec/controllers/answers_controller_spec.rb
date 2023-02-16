@@ -55,7 +55,7 @@ RSpec.describe AnswersController, type: :controller do
         end.not_to change(Answer, :count)
       end
 
-      it 'redirects to @question' do
+      it 'redirects to @question', js: true do
         post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }
         expect(response).to redirect_to question
       end

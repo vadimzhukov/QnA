@@ -13,10 +13,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     if @answer.save
-      redirect_to question_path(@question), notice: "Answer successfully created."
+      redirect_to @question, notice: "Answer successfully created."
     else
       flash[:alert] = "Error. Answer was not saved."
-      redirect_to question_path(@question)
+      redirect_to @question
     end
   end
 

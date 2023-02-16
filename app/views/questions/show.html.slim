@@ -5,13 +5,13 @@ h2=@question.title
 p=@question.body
 
 h3 Answers to the question:
-.answers
-ul
-  p=render @question.answers
+.answers-list
+  ul
+    p=render @question.answers
 
-div
-=form_with model: [@question, @answer] do |f|
-  =f.label "New answer:"
-  =f.text_area :body
-  =f.hidden_field :question_id, value: @question.id
-  p =f.submit "Submit answer"
+=render 'shared/errors', resource: @answer
+.create-answer
+  =form_with model: [@question, @answer] do |f|
+    =f.label "New answer:"
+    =f.text_area :body
+    p =f.submit "Submit answer"
