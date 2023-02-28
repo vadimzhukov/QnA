@@ -106,4 +106,46 @@ RSpec.describe AnswersController, type: :controller do
       expect { delete :destroy, params: { id: answer, question_id: question.id }, format: :js }.to change(Answer, :count).by(-1)
     end
   end
+
+  describe 'PATCH #mark_as_best' do
+
+    let!(:answers) { create_list(:answer, 5, question: question, user: user, rating: 0) }
+    before { login(user) }
+
+    context 'have best answer, but mark other answer as best' do
+
+      before { answers[0].update_attribute(:rating, 1) }
+
+      it 'assigns answer to @answer' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        expect(assigns(:answer)).to eq answers[1]
+      end
+
+      it 'resets rating of other answers' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        answers.each {|a| a.reload}
+        expect(answers.reject{|a| a == answers[1]}.map{|a| a.rating}.sum).to eq 0
+      end
+
+      it 'sets rating of best answer to 1' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        answers.each {|a| a.reload}
+        expect(answers[1].rating).to eq 1
+      end
+    end
+
+    context 'do not have best answer and mark other answer as best' do
+      
+      it 'assigns answer to @answer' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        expect(assigns(:answer)).to eq answers[1]
+      end
+
+      it 'sets rating of best answer to 1' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        answers.each {|a| a.reload}
+        expect(answers[1].rating).to eq 1
+      end
+    end
+  end
 end

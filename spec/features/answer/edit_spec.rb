@@ -66,6 +66,7 @@ feature "Edit answer", "
 
       within ".answers-list" do
         expect(page).to have_content answer.body
+        
         expect(page).to have_content "Body can't be blank"
         page.has_button? "Save"
       end

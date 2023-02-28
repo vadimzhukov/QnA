@@ -4,9 +4,16 @@ h3 Question #{@question.id}
 h2=@question.title
 p=@question.body
 
-h3 Answers to the question:
 ol.answers-list
-  =render @question.answers.order(:id)
+  -if @question.answers.best
+    .best-answer
+      h3 Best answer
+      =render @question.answers.best
+    h3 Answers to the question:
+    =render @question.answers.where("id != ?", @question.answers.best.id).order(:id)
+  -else
+    h3 Answers to the question:
+    =render @question.answers.order(:id)
 
 .answer-errors
   = render 'shared/errors', resource: @answer
