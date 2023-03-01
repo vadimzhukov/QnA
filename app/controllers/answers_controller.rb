@@ -23,16 +23,9 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-    if (!@question.answers.best || @answer == @question.answers.best)
+      @question.answers.update_all(rating: 0)
       @answer.update(answer_params)
-    else
-      @question.answers.best.update_attribute(:rating, 0)
-      @answer.update(answer_params)
-    end
-
-    if (answer_params[:rating] == "1")
       redirect_to @question
-    end
   end
 
   private
