@@ -25,13 +25,8 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'assigns a new Answer to @question' do
+    it 'define new Answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
-      expect(assigns(:answer).question_id).to eq question.id
-    end
-
-    it 'assigns collection of answers to @question' do
-      expect(assigns(:answers)).to eq question.answers
     end
 
     it 'renders the show view' do

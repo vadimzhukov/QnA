@@ -7,10 +7,12 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'answers', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <nav>
+    <nav align="right">
       <% if user_signed_in? %>
         <%= button_to "Log out", destroy_user_session_path, method: :delete %>
       <% end %>

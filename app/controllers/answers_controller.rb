@@ -1,37 +1,32 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_answer, only: [:show, :edit, :update, :destroy]
-  before_action :load_question, only: [:create, :update]
+  before_action :load_answer, only: [:show, :edit, :update, :destroy, :mark_as_best]
+  before_action :load_question, only: [:new, :create, :mark_as_best]
 
   def new
-    @answer = current_user.answers.new
+    @answer = @question.answers.new
   end
 
   def edit; end
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    if @answer.save
-      redirect_to question_path(@question), notice: "Answer successfully created."
-    else
-      flash[:alert] = "Error. Answer was not saved."
-      redirect_to question_path(@question)
-    end
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def update
-    if @answer.update(answer_params)
-      redirect_to answer_path(id: @answer.id)
-    else
-      render :edit
-    end
+    @question = @answer.question
+    @answer.update(answer_params)
   end
 
   def destroy
-    @question = @answer.question
     @answer.destroy
-    redirect_to @question
+  end
+
+  def mark_as_best
+      # @question.answers.update_all(rating: 0)
+      # @answer.update(answer_params)
+      @answer.mark_as_best
+      redirect_to @question
   end
 
   private
@@ -45,6 +40,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, :question_id)
+    params.require(:answer).permit(:body, :correct, :question_id, :rating)
   end
 end
