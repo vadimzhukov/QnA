@@ -1,5 +1,5 @@
 <% if !@answer.errors.present? %>
-  $("#answer-<%=@answer.id%>").html("<%=j render @answer%>")
+  $("#answer-<%=@answer.id%>").html("<%=j render partial: 'answers/answer', collection: [@answer], locals: {best_answer: false}%>")
 <% else %>
   $("#answer-<%= @answer.id %>").append("<%= render 'shared/errors', resource: @answer %>")
 <% end %>

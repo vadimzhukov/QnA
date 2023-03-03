@@ -5,20 +5,23 @@ h2=@question.title
 p=@question.body
 
 ol.answers-list
-  -if @question.answers.best
+  -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}
+  -not_best_answers = @question.answers.reject{|a| a == best_answer}
+  -if best_answer 
     .best-answer
       h3 Best answer
-      =render @question.answers.best
+      =render partial: 'answers/answer', collection: best_answer, locals: {best_answer: true}
     h3 Answers to the question:
-    =render @question.answers.where("id != ?", @question.answers.best.id).order(:id)
+    =render partial: 'answers/answer', collection: not_best_answers, locals: {best_answer: false}
   -else
     h3 Answers to the question:
-    =render @question.answers.order(:id)
+    =render partial: 'answers/answer', collection: @question.answers.order(:id), locals: {best_answer: false}
 
 .answer-errors
   = render 'shared/errors', resource: @answer
 
-=form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
-  =f.label "New answer:"
-  =f.text_area :body
-  p =f.submit "Submit answer"
+-if user_signed_in?
+  =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
+    =f.label "New answer:"
+    =f.text_area :body
+    p =f.submit "Submit answer"

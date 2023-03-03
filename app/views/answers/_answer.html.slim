@@ -1,6 +1,6 @@
 li id="answer-#{answer.id}"
   =answer.body
-  -if !(answer.id == answer.question.answers.best&.id)
+  -if !best_answer
     =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, rating: 1}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
 
   =form_with model: answer,  class: "hidden", html: { id: "edit-answer-#{answer.id}"} do |f|
@@ -8,7 +8,7 @@ li id="answer-#{answer.id}"
     =f.text_area :body
     p =f.submit "Save"
 
-  -if answer.user == current_user
+  -if answer[:user_id] == current_user&.id
     p =link_to "Edit", "#", class: "edit-answer-link", data: { answer_id: answer.id }
     =button_to "delete", answer_path(answer), remote: true, method: :delete
 
