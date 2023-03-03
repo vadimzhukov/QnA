@@ -23,8 +23,6 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-      # @question.answers.update_all(rating: 0)
-      # @answer.update(answer_params)
       @answer.mark_as_best
       redirect_to @question
   end
