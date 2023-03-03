@@ -1,5 +1,5 @@
 li
   =link_to question.title, question_path(question) 
 
-  -if question.user == current_user
+  -if question[:user] == current_user&.id
     =button_to "delete", question_path(question), method: :delete, id: question.id
