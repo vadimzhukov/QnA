@@ -16,6 +16,9 @@ class AnswersController < ApplicationController
   def update
     @question = @answer.question
     @answer.update(answer_params)
+    if params[:answer][:files].present?
+      @answer.files.attach(params[:answer][:files])
+    end
   end
 
   def destroy
@@ -38,6 +41,10 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, :question_id, :rating, files: [])
+    params.require(:answer).permit(:body, :correct, :question_id, :rating)
+  end
+
+  def answer_params_files
+    params.require(:answer).permit(files: [])
   end
 end

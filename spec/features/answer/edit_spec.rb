@@ -72,5 +72,25 @@ feature "Edit answer", "
       end
 
     end
+
+    
+    scenario "Edit answer of the user with adding files" do
+      
+      click_on "Edit"
+
+      within "#answer-#{answer.id}" do
+        attach_file ["#{Rails.root}/spec/spec_helper.rb"]
+        
+        click_on "Save"
+      end
+
+      expect(current_path).to eq question_path(question)
+
+      within "#answer-#{answer.id}" do
+        expect(page).to have_content "Edit"
+        expect(page).not_to have_selector "textarea"
+        expect(page).to have_link "spec_helper.rb"
+      end
+    end
   end
 end
