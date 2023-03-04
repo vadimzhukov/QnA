@@ -18,13 +18,18 @@ feature "create answer on question page", "
     end
 
     scenario "create answer with valid body", js: true do
-      fill_in "answer_body", with: "Test answer body"
-      click_on "Submit answer"
+      within ".new-answer" do
+        fill_in "answer_body", with: "Test answer body"
+        click_on "Submit answer"
+      end
 
+      
       expect(page).to have_content question.title
       expect(page).to have_content question.body
 
-      answers.each { |a| expect(page).to have_content a.body }
+      within ".answers-list" do
+        answers.each { |a| expect(page).to have_content a.body }
+      end
 
       within ".answers-list" do  
         expect(page).to have_content "Test answer body"
@@ -32,7 +37,9 @@ feature "create answer on question page", "
     end
 
     scenario "create answer with invalid empty body", js: true do
-      click_on "Submit answer"
+      within ".new-answer" do
+        click_on "Submit answer"
+      end
 
       expect(page).to have_content question.title
       expect(page).to have_content question.body
@@ -40,6 +47,22 @@ feature "create answer on question page", "
       within ".answer-errors" do
         expect(page).to have_content "Body can't be blank"
       end
+    end
+
+    scenario "User creates answer with files", js: true do
+      within ".new-answer" do  
+        fill_in "answer_body", with: "Test answer body"
+        attach_file "File", ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on "Submit answer"
+      end
+
+      within ".answers-list" do  
+        expect(page).to have_content "Test answer body"
+        expect(page).to have_link "rails_helper.rb"
+        expect(page).to have_link "spec_helper.rb"
+      end
+     
+      
     end
   end
 

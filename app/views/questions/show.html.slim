@@ -8,12 +8,13 @@ p=@question.body
     p=link_to file.filename, url_for(file)
 
 ol.answers-list
-  -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}
+  -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}.first
   -not_best_answers = @question.answers.reject{|a| a == best_answer}
+  
   -if best_answer 
     .best-answer
       h3 Best answer
-      =render partial: 'answers/answer', collection: best_answer, locals: {best_answer: true}
+      =render partial: 'answers/answer', collection: [best_answer], locals: {best_answer: true}
     h3 Answers to the question:
     =render partial: 'answers/answer', collection: not_best_answers, locals: {best_answer: false}
   -else
@@ -25,6 +26,10 @@ ol.answers-list
 
 -if user_signed_in?
   =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
-    =f.label "New answer:"
-    =f.text_area :body
+    p
+      =f.label "New answer:"
+      =f.text_area :body
+    p
+      =f.label :files
+      =f.file_field :files, multiple: true
     p =f.submit "Submit answer"
