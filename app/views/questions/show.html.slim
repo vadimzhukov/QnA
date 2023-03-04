@@ -3,8 +3,9 @@
 h3 Question #{@question.id}
 h2=@question.title
 p=@question.body
--if @question.file.attached?
-  p=link_to @question.file.filename, url_for(@question.file)
+-if @question.files.attached?
+  -@question.files.each do |file| 
+    p=link_to file.filename, url_for(file)
 
 ol.answers-list
   -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}

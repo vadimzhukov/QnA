@@ -35,19 +35,20 @@ feature "Create question", "
       expect(page).to have_content "Error in question"
     end
 
-    scenario "User creates question with file" do
+    scenario "User creates question with files" do
       click_on "Ask question"
 
       fill_in "Title", with: "Test question title"
       fill_in "Body", with: "Test question body"
 
-      attach_file "File", "#{Rails.root}/spec/rails_helper.rb"
+      attach_file "File", ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
       click_on "Ask"
 
       expect(page).to have_content "Test question title"
       expect(page).to have_content "Test question body"
       expect(page).to have_link "rails_helper.rb"
+      expect(page).to have_link "spec_helper.rb"
     end
   end
 
