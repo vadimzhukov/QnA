@@ -36,6 +36,7 @@ feature "Edit answer", "
       visit(question_path(question))
     end
     scenario "Edit answer of the user with valid body" do
+      
       click_on "Edit"
 
       within ".answers-list" do

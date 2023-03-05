@@ -11,14 +11,13 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
+    add_files
   end
 
   def update
     @question = @answer.question
     @answer.update(answer_params)
-    if params[:answer][:files].present?
-      @answer.files.attach(params[:answer][:files])
-    end
+    add_files
   end
 
   def destroy
@@ -46,5 +45,8 @@ class AnswersController < ApplicationController
 
   def answer_params_files
     params.require(:answer).permit(files: [])
+  end
+  def add_files
+    @answer.files.attach(params[:answer][:files]) if params[:answer][:files].present?
   end
 end

@@ -1,5 +1,26 @@
-li
-  =link_to question.title, question_path(question) 
+li  id="question-#{question.id}"
+  =link_to question.title, question_path(question)
+  p 
+  =question.body 
+  -question.files.each do |file|
+    p 
+    =link_to file.filename, url_for(file)
+
+  =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
+    p
+    =f.label :title 
+    =f.text_field :title
+    p 
+    =f.label :body
+    =f.text_area :body
+    p 
+    =f.label "Files"
+    =f.file_field :files, multiple: true
+    p
+    =f.submit "Save"
 
   -if question[:user_id] == current_user&.id
+    p
+    =link_to "Edit", "#", class: "edit-question-link", data: { question_id: question.id }
+    p
     =button_to "delete", question_path(question), method: :delete, id: question.id
