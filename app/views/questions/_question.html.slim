@@ -2,9 +2,12 @@ li  id="question-#{question.id}"
   =link_to question.title, question_path(question)
   p 
   =question.body 
-  -question.files.each do |file|
-    p 
-    =link_to file.filename, url_for(file)
+  
+  -if question.files.attached?
+    -question.files.each do |file|
+      p 
+      =link_to file.filename, url_for(file) 
+      =button_to "Delete file", delete_file_question_path(question), method: :patch, params: {question: {id: question.id, file: file}}, remote: true
 
   =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
     p

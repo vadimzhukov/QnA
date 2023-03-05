@@ -46,6 +46,7 @@ class AnswersController < ApplicationController
   def answer_params_files
     params.require(:answer).permit(files: [])
   end
+  
   def add_files
     @answer.files.attach(params[:answer][:files]) if params[:answer][:files].present?
   end

@@ -91,5 +91,26 @@ feature "Edit question", "
         expect(page).to have_link "spec_helper.rb"
       end
     end
+
+    scenario "Delete file while edit question of the user" do
+      
+      click_on "Edit"
+
+      within "#question-#{question.id}" do
+        attach_file ["#{Rails.root}/spec/rails_helper.rb"] 
+        
+        click_on "Save"
+      end
+
+      within "#question-#{question.id}" do
+        click_button "Delete file" 
+      end
+
+      expect(current_path).to eq questions_path
+
+      within "#question-#{question.id}" do
+        expect(page).not_to have_link "rails_helper.rb"
+      end
+    end
   end
 end

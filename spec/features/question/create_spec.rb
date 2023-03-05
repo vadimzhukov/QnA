@@ -41,7 +41,7 @@ feature "Create question", "
       fill_in "Title", with: "Test question title"
       fill_in "Body", with: "Test question body"
 
-      attach_file "File", ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      attach_file ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
       click_on "Ask"
 

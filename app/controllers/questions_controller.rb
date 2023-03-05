@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
 
   def index
     @questions = Question.all.order(created_at: :asc)
@@ -35,6 +35,11 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     redirect_to questions_path
+  end
+
+  def delete_file
+    @question.files.find(params[:question][:file].to_i).purge
+    @question.reload
   end
 
   private
