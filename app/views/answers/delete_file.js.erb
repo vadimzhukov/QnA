@@ -1,0 +1,5 @@
+<% if !@answer.errors.present? %>
+  $("#answer-<%=@answer.id%>").replaceWith("<%=j render @answer%>")
+<% else %>
+  $("#answer-<%= @answer.id %>").append("<%= render 'shared/errors', resource: @answer %>")
+<% end %>

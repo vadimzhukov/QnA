@@ -5,6 +5,7 @@ div id="answer-#{answer.id}"
       -answer.files.each do |file|
         p
         =link_to file.filename, url_for(file)
+        =button_to "Delete file", delete_file_answer_path(answer), method: :patch, params: {answer: {id: answer.id, file: file}}, remote: true
 
     -best_answer ||= false
     -if !best_answer

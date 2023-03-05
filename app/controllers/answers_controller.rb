@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_answer, only: [:show, :edit, :update, :destroy, :mark_as_best]
+  before_action :load_answer, only: [:show, :edit, :update, :destroy, :mark_as_best, :delete_file]
   before_action :load_question, only: [:new, :create, :mark_as_best]
 
   def new
@@ -29,6 +29,11 @@ class AnswersController < ApplicationController
       redirect_to @question
   end
 
+  def delete_file
+    @answer.files.find(params[:answer][:file].to_i).purge
+    @answer.reload
+  end
+
   private
 
   def load_answer
@@ -46,7 +51,7 @@ class AnswersController < ApplicationController
   def answer_params_files
     params.require(:answer).permit(files: [])
   end
-  
+
   def add_files
     @answer.files.attach(params[:answer][:files]) if params[:answer][:files].present?
   end
