@@ -36,6 +36,7 @@ feature "Edit answer", "
       visit(question_path(question))
     end
     scenario "Edit answer of the user with valid body" do
+      
       click_on "Edit"
 
       within ".answers-list" do
@@ -71,6 +72,47 @@ feature "Edit answer", "
         page.has_button? "Save"
       end
 
+    end
+
+    
+    scenario "Edit answer of the user with adding files" do
+      
+      click_on "Edit"
+
+      within "#answer-#{answer.id}" do
+        attach_file ["#{Rails.root}/spec/spec_helper.rb"]
+        
+        click_on "Save"
+      end
+
+      expect(current_path).to eq question_path(question)
+
+      within "#answer-#{answer.id}" do
+        expect(page).to have_content "Edit"
+        expect(page).not_to have_selector "textarea"
+        expect(page).to have_link "spec_helper.rb"
+      end
+    end
+
+    scenario "Delete file while edit answer of the user" do
+      
+      click_on "Edit"
+
+      within "#answer-#{answer.id}" do
+        attach_file ["#{Rails.root}/spec/rails_helper.rb"] 
+        
+        click_on "Save"
+      end
+
+      within "#answer-#{answer.id}" do
+        click_button "Delete file" 
+      end
+
+      expect(current_path).to eq question_path(question)
+
+      within "#answer-#{answer.id}" do
+        expect(page).not_to have_link "rails_helper.rb"
+      end
     end
   end
 end

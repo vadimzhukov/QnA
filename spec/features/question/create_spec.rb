@@ -6,28 +6,59 @@ feature "Create question", "
   I can ask a question
 " do
   given(:user) { create(:user) }
-  background do
-    login(user)
+
+  describe "A11d user" do
+
+    background do
+      login(user)
+      visit questions_path
+    end
+
+    scenario "user asks question with correct body" do
+      click_on "Ask question"
+
+      fill_in "Title", with: "Test question title"
+      fill_in "Body", with: "Test question body"
+      click_on "Ask"
+
+      expect(page).to have_content "Test question title"
+      expect(page).to have_content "Test question body"
+    end
+
+    scenario "user asks question with invalid empty body" do
+      click_on "Ask question"
+
+      fill_in "question_title", with: "Test question title"
+
+      click_on "Ask"
+
+      expect(page).to have_content "Error in question"
+    end
+
+    scenario "User creates question with files" do
+      click_on "Ask question"
+
+      fill_in "Title", with: "Test question title"
+      fill_in "Body", with: "Test question body"
+
+      attach_file ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+      click_on "Ask"
+
+      expect(page).to have_content "Test question title"
+      expect(page).to have_content "Test question body"
+      expect(page).to have_link "rails_helper.rb"
+      expect(page).to have_link "spec_helper.rb"
+    end
   end
 
-  scenario "user asks question with correct body" do
-    click_on "Ask question"
+  context "Una11d user" do
 
-    fill_in "Title", with: "Test question title"
-    fill_in "Body", with: "Test question body"
-    click_on "Ask"
+    scenario "user tries to add question" do
+      visit questions_path
 
-    expect(page).to have_content "Test question title"
-    expect(page).to have_content "Test question body"
+      expect(page).not_to have_link "Add question"
+    end
   end
 
-  scenario "user asks question with invalid empty body" do
-    click_on "Ask question"
-
-    fill_in "question_title", with: "Test question title"
-
-    click_on "Ask"
-
-    expect(page).to have_content "Error in question"
-  end
 end
