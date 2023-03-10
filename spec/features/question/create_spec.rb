@@ -50,6 +50,25 @@ feature "Create question", "
       expect(page).to have_link "rails_helper.rb"
       expect(page).to have_link "spec_helper.rb"
     end
+
+    scenario "User creates question with valid link" do
+      click_on "Ask question"
+
+      fill_in "Title", with: "Test question title"
+      fill_in "Body", with: "Test question body"
+
+      within "#links" do
+        fill_in "Name", with: "yandex"
+        fill_in "Url", with: "http://yandex.ru"
+      end
+
+      click_on "Ask"
+
+      within ".question-links" do
+        expect(page).to have_link "yandex", href: "http://yandex.ru"
+      end
+    end
+
   end
 
   context "Una11d user" do

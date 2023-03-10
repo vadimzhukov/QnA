@@ -1,35 +1,53 @@
 =render "shared/errors", resource: @question
 
 h3 Question #{@question.id}
+
 h2=@question.title
+
 p=@question.body
+
 -if @question.files.attached?
   -@question.files.each do |file| 
     p=link_to file.filename, url_for(file)
 
-ol.answers-list
-  -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}.first
-  -not_best_answers = @question.answers.reject{|a| a == best_answer}
-  
-  -if best_answer 
-    .best-answer
-      h3 Best answer
-      =render partial: 'answers/answer', collection: [best_answer], locals: {best_answer: true}
-    h3 Answers to the question:
-    =render partial: 'answers/answer', collection: not_best_answers, locals: {best_answer: false}
-  -else
-    h3 Answers to the question:
-    =render partial: 'answers/answer', collection: @question.answers.order(:id), locals: {best_answer: false}
+-if @question.links.present?
+  h4 Links:
+  .question-links
+    -@question.links.each do |link|
+      =render "shared/link_with_gist_preview", link: link
+
+-if @question.answers.present?
+  ol.answers-list
+    -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}.first
+    -not_best_answers = @question.answers.reject{|a| a == best_answer}
+    
+    -if best_answer 
+      .best-answer
+        h3 Best answer
+        =render partial: 'answers/answer', collection: [best_answer], locals: {best_answer: true}
+      -if !best_answer
+        h3 Answers to the question:
+        =render partial: 'answers/answer', collection: not_best_answers, locals: {best_answer: false}
+    -else
+      h3 Answers to the question:
+      =render partial: 'answers/answer', collection: @question.answers.order(:id), locals: {best_answer: false}
 
 .answer-errors
   = render 'shared/errors', resource: @answer
 
 -if user_signed_in?
   =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
-    p
+    .field
       =f.label "New answer:"
       =f.text_area :body
-    p
+    .field
       =f.label :files
       =f.file_field :files, multiple: true
+    h3 Links:
+    #links 
+      =f.fields_for :links do |link|
+        =render "link_fields", f: link
+      .links 
+        =link_to_add_association "add link", f, :links
+        
     p =f.submit "Submit answer"

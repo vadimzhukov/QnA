@@ -1,0 +1,7 @@
+-if link&.gist?
+  p.gist
+  <script src='#{link.url}'></script>
+-else
+  p
+  = link_to link.name, link.url
+ 

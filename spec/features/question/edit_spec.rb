@@ -11,7 +11,7 @@ feature "Edit question", "
   
   given!(:question) { create(:question, user: user1) }
 
-  scenario "Try to edit question of another author", js: true do
+  scenario "A11d user tries to edit question of another author", js: true do
     login(user2)
     visit(questions_path)
 
@@ -28,12 +28,12 @@ feature "Edit question", "
     end
   end
 
-  describe "Author of question logged in", js: true do
+  describe "Author of question", js: true do
     background do
       login(user1)
       visit(questions_path)
     end
-    scenario "Edit question of the user with valid body" do
+    scenario "inputs valid body" do
 
       click_on "Edit"
 
@@ -52,7 +52,7 @@ feature "Edit question", "
       end
     end
 
-    scenario "Try to edit question of the user with invalid body" do
+    scenario "inputs invalid body" do
       click_on "Edit"
 
       within ".questions-list" do
@@ -73,7 +73,7 @@ feature "Edit question", "
     end
 
     
-    scenario "Edit question of the user with adding files" do
+    scenario "adds file" do
       
       click_on "Edit"
 
@@ -92,7 +92,7 @@ feature "Edit question", "
       end
     end
 
-    scenario "Delete file while edit question of the user" do
+    scenario "deletes file" do
       
       click_on "Edit"
 
@@ -110,6 +110,70 @@ feature "Edit question", "
 
       within "#question-#{question.id}" do
         expect(page).not_to have_link "rails_helper.rb"
+      end
+    end
+    
+    scenario "adds valid link" do
+
+      click_on "Edit"
+
+      within "#links" do
+        click_on "add link"
+        fill_in "Name", with: "Link1"
+        fill_in "Url", with: "http://google.com"
+      end
+      click_on "Save"
+
+      expect(current_path).to eq questions_path
+
+      within ".questions-list" do
+        expect(page).to have_link "Link1", href: "http://google.com"
+      end
+    end
+
+    scenario "adds invalid link" do
+
+      click_on "Edit"
+
+      within "#links" do
+        click_on "add link"
+        fill_in "Name", with: "Link1"
+        fill_in "Url", with: "google"  
+      end
+      click_on "Save"
+
+      expect(current_path).to eq questions_path
+
+      within "#question-#{question.id}" do
+        expect(page).to have_content "Links url is not a valid URL"
+      end
+    end
+
+    scenario "deletes link" do
+
+      click_on "Edit"
+
+      within "#links" do
+        click_on "add link"
+        fill_in "Name", with: "Link1"
+        fill_in "Url", with: "http://google.com"  
+      end
+      click_on "Save"
+
+      within ".questions-list" do
+        expect(page).to have_link "Link1", href: "http://google.com"
+      end
+
+      click_on "Edit"
+      within "#links" do
+        click_on "remove link"
+      end
+      click_on "Save"
+
+      expect(current_path).to eq questions_path
+
+      within ".questions-list" do
+        expect(page).not_to have_link "Link1", href: "http://google.com"
       end
     end
   end

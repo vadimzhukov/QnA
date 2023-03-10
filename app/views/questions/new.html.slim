@@ -2,13 +2,23 @@ h1 Ask your question
 =render "shared/errors", resource: @question
 
 =form_with model: @question do |f|
+  .field
+    =f.label :title
+    =f.text_field :title
+  .field
+    =f.label :body
+    =f.text_area :body
+  .field
+    h3 Files: 
+    p
+    =f.label :files
+    =f.file_field :files, multiple: true
+  .field
+    h3 Links:
+    #links
+      =f.fields_for :links do |link|
+        =render "link_fields", f: link
+      .links 
+        =link_to_add_association "add link", f, :links
   p
-  =f.label :title
-  =f.text_field :title
-  p
-  =f.label :body
-  =f.text_area :body
-  p
-  =f.label :files
-  =f.file_field :files, multiple: true
-  p=f.submit "Ask"
+  =f.submit "Ask"
