@@ -7,24 +7,32 @@ div id="answer-#{answer.id}"
         =link_to file.filename, url_for(file)
         =button_to "Delete file", delete_file_answer_path(answer), method: :patch, params: {answer: {id: answer.id, file: file}}, remote: true
 
+    -if answer.links.any?
+      -answer.links.each do |link|
+        =render "shared/link_with_gist_preview", link: link
+
     -best_answer ||= false
-    -if !best_answer
-      =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, rating: 1}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
+
+    -if !best_answer && current_user&.author_of?(answer.question)
+      =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, best: true}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
 
     =form_with model: answer,  class: "hidden", html: { id: "edit-answer-#{answer.id}"} do |f|
-      p
-        =f.label "Answer body"
+      .field
+        =f.label "New answer:"
+        br
         =f.text_area :body
-      p
+      .field
         =f.label :files
+        br
         =f.file_field :files, multiple: true
+      h3 Links:
+      #links 
+        =f.fields_for :links do |link|
+          =render "link_fields", f: link
+        .links 
+          =link_to_add_association "add link", f, :links
       p =f.submit "Save"
 
-    -if answer[:user_id] == current_user&.id
+    -if current_user&.author_of?(answer)
       p =link_to "Edit", "#", class: "edit-answer-link", data: { answer_id: answer.id }
       =button_to "delete", answer_path(answer), remote: true, method: :delete
-
-    
-    
-  
-    

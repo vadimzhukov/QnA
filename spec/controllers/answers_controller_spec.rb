@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let!(:user) { create(:user) }
-  let!(:question) { create(:question, user: user) }
-  let(:answer) { create(:answer, user: user, question: question) }
+
+  let!(:question) { create(:question, user:) }
+  let(:answer) { create(:answer, user:, question:) }
 
   describe 'GET #new' do
     before { login(user) }
@@ -27,14 +28,20 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     before { login(user) }
-    
+
     context 'valid answer parameters' do
-      it 'adds answer to database'  do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id }, format: :js }.to change(Answer, :count).by(1), format: :js
+      it 'adds answer to database' do
+        expect do
+          post :create, params: { answer: attributes_for(:answer), question_id: question.id },
+                        format: :js
+        end.to change(Answer, :count).by(1), format: :js
       end
 
       it 'renders create template' do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id }, format: :js }.to change(Answer, :count).by(1), format: :js
+        expect do
+          post :create, params: { answer: attributes_for(:answer), question_id: question.id },
+                        format: :js
+        end.to change(Answer, :count).by(1), format: :js
         expect(response).to render_template :create
       end
     end
@@ -49,7 +56,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders create template' do
         post :create,
-               params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }, format: :js
+             params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :create
       end
     end
@@ -83,14 +90,16 @@ RSpec.describe AnswersController, type: :controller do
     context 'invalid parameters to update' do
       it 'doesnt change attributes in DB' do
         initial_answer = answer
-        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer, :invalid) },
+                       format: :js
         answer.reload
         expect(answer.body).to eq initial_answer.body
         expect(answer.correct).to eq initial_answer.correct
       end
 
       it 'renders update view' do
-        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer, :invalid) },
+                       format: :js
         expect(response).to render_template :update
       end
     end
@@ -98,53 +107,52 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     # let!(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question, user: user) }
+    let!(:answer) { create(:answer, question:, user:) }
 
     before { login(user) }
 
     it 'deletes @answer form DB' do
-      expect { delete :destroy, params: { id: answer, question_id: question.id }, format: :js }.to change(Answer, :count).by(-1)
+      expect do
+        delete :destroy, params: { id: answer, question_id: question.id }, format: :js
+      end.to change(Answer, :count).by(-1)
     end
   end
 
   describe 'PATCH #mark_as_best' do
-
-    let!(:answers) { create_list(:answer, 5, question: question, user: user, rating: 0) }
+    let!(:answers) { create_list(:answer, 5, question:, user:, best: false) }
     before { login(user) }
 
     context 'have best answer, but mark other answer as best' do
-
-      before { answers[0].update_attribute(:rating, 1) }
+      before { answers[0].update_attribute(:best, true) }
 
       it 'assigns answer to @answer' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         expect(assigns(:answer)).to eq answers[1]
       end
 
-      it 'resets rating of other answers' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
-        answers.each {|a| a.reload}
-        expect(answers.reject{|a| a == answers[1]}.map{|a| a.rating}.sum).to eq 0
+      it 'resets bests of other answers' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
+        answers.each { |a| a.reload }
+        expect(answers.reject { |a| a == answers[1] }.reduce(false) { |sum, a| sum = sum || a.best }).to eq false
       end
 
-      it 'sets rating of best answer to 1' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
-        answers.each {|a| a.reload}
-        expect(answers[1].rating).to eq 1
+      it 'sets answers best to true' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
+        answers.each { |a| a.reload }
+        expect(answers[1].best).to eq true
       end
     end
 
     context 'do not have best answer and mark other answer as best' do
-      
       it 'assigns answer to @answer' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         expect(assigns(:answer)).to eq answers[1]
       end
 
-      it 'sets rating of best answer to 1' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1}, question_id: question }, format: :js
-        answers.each {|a| a.reload}
-        expect(answers[1].rating).to eq 1
+      it 'sets answers best to true' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
+        answers.each { |a| a.reload }
+        expect(answers[1].best).to eq true
       end
     end
   end

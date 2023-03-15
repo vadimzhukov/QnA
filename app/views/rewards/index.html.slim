@@ -1,0 +1,13 @@
+h1 = "Rewards of #{current_user.email}"
+
+ol
+- @rewards.each do |r|
+  li
+    = "Вопрос: #{r.rewardable.body}"
+    p
+    = "Награда за лучший ответ на вопрос: #{r.name}"
+    p
+    - if r.image.previewable?
+      = image_tag r.image.preview(resize_to_limit: [100, 100])
+    
+

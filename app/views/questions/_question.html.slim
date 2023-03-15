@@ -9,20 +9,30 @@ li  id="question-#{question.id}"
       =link_to file.filename, url_for(file) 
       =button_to "Delete file", delete_file_question_path(question), method: :patch, params: {question: {id: question.id, file: file}}, remote: true
 
+  -if question.links.any?
+      -question.links.each do |link|
+        =render "shared/link_with_gist_preview", link: link
+
   =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
-    p
-    =f.label :title 
-    =f.text_field :title
-    p 
-    =f.label :body
-    =f.text_area :body
-    p 
-    =f.label "Files"
-    =f.file_field :files, multiple: true
-    p
+    .field
+      =f.label :title 
+      =f.text_field :title
+    .field 
+      =f.label :body
+      =f.text_area :body
+    .field 
+      =f.label "Files"
+      =f.file_field :files, multiple: true
+    .field 
+    h3 Links:
+    #links 
+      =f.fields_for :links do |link|
+        =render "link_fields", f: link
+      .links 
+        =link_to_add_association "add link", f, :links
     =f.submit "Save"
 
-  -if question[:user_id] == current_user&.id
+  -if current_user&.author_of?(question)
     p
     =link_to "Edit", "#", class: "edit-question-link", data: { question_id: question.id }
     p

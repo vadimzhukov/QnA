@@ -5,15 +5,14 @@ feature "Edit answer", "
   As an author of the answer,
   I can edit the answer
 " do
-
   given!(:user1) { create(:user) }
   given!(:user2) { create(:user) }
-  
-  given!(:question) { create(:question) }
-  
-  given!(:answer) { create(:answer, user: user1, question: question) }
 
-  scenario "Try to edit answer of another author", js: true do
+  given!(:question) { create(:question) }
+
+  given!(:answer) { create(:answer, user: user1, question:) }
+
+  scenario "A11d user tries to edit answer of another author", js: true do
     login(user2)
     visit(question_path(question))
 
@@ -30,13 +29,12 @@ feature "Edit answer", "
     end
   end
 
-  describe "Edit answer by the author", js: true do
+  describe "Author of the answer", js: true do
     background do
       login(user1)
       visit(question_path(question))
     end
-    scenario "Edit answer of the user with valid body" do
-      
+    scenario "inputs valid body" do
       click_on "Edit"
 
       within ".answers-list" do
@@ -54,7 +52,7 @@ feature "Edit answer", "
       end
     end
 
-    scenario "Try to edit answer of the user with invalid body" do
+    scenario "inputs invalid body" do
       click_on "Edit"
 
       within ".answers-list" do
@@ -67,21 +65,18 @@ feature "Edit answer", "
 
       within ".answers-list" do
         expect(page).to have_content answer.body
-        
+
         expect(page).to have_content "Body can't be blank"
         page.has_button? "Save"
       end
-
     end
 
-    
-    scenario "Edit answer of the user with adding files" do
-      
+    scenario "adds file" do
       click_on "Edit"
 
       within "#answer-#{answer.id}" do
         attach_file ["#{Rails.root}/spec/spec_helper.rb"]
-        
+
         click_on "Save"
       end
 
@@ -94,24 +89,76 @@ feature "Edit answer", "
       end
     end
 
-    scenario "Delete file while edit answer of the user" do
-      
+    scenario "deletes file" do
       click_on "Edit"
 
       within "#answer-#{answer.id}" do
-        attach_file ["#{Rails.root}/spec/rails_helper.rb"] 
-        
+        attach_file ["#{Rails.root}/spec/rails_helper.rb"]
+
         click_on "Save"
       end
 
       within "#answer-#{answer.id}" do
-        click_button "Delete file" 
+        click_button "Delete file"
       end
 
       expect(current_path).to eq question_path(question)
 
       within "#answer-#{answer.id}" do
         expect(page).not_to have_link "rails_helper.rb"
+      end
+    end
+
+    scenario "adds valid link" do
+      within "#answer-#{answer.id}" do
+        click_on "Edit"
+
+        within "#links" do
+          click_on "add link"
+          fill_in "Name", with: "Link1"
+          fill_in "Url", with: "http://google.com"
+        end
+        click_on "Save"
+
+        expect(page).to have_link "Link1", href: "http://google.com"
+      end
+    end
+
+    scenario "adds invalid link" do
+      within "#answer-#{answer.id}" do
+        click_on "Edit"
+
+        within "#links" do
+          click_on "add link"
+          fill_in "Name", with: "Link1"
+          fill_in "Url", with: "google"
+        end
+        click_on "Save"
+
+        expect(page).to have_content "Links url is not a valid URL"
+      end
+    end
+
+    scenario "deletes link" do
+      within "#answer-#{answer.id}" do
+        click_on "Edit"
+
+        within "#links" do
+          click_on "add link"
+          fill_in "Name", with: "Link1"
+          fill_in "Url", with: "http://google.com"
+        end
+        click_on "Save"
+
+        expect(page).to have_link "Link1", href: "http://google.com"
+
+        click_on "Edit"
+        within "#links" do
+          click_on "remove link"
+        end
+        click_on "Save"
+
+        expect(page).not_to have_link "Link1", href: "http://google.com"
       end
     end
   end

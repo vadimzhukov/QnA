@@ -1,0 +1,7 @@
+-if link.gist?
+  p.gist
+  = javascript_include_tag link.url
+-else
+  p
+  = link_to link.name, link.url
+ 
