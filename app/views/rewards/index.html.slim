@@ -7,6 +7,7 @@ ol
     p
     = "Награда за лучший ответ на вопрос: #{r.name}"
     p
-    = image_tag r.image.preview(:thumb)
+    - if r.image.previewable?
+      = image_tag r.image.preview(:thumb)
     
 
