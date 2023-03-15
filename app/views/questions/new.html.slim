@@ -20,5 +20,14 @@ h1 Ask your question
         =render "link_fields", f: link
       .links 
         =link_to_add_association "add link", f, :links
+    .field.reward
+      h3 Reward:
+      =f.fields_for :reward do |r|
+        p
+        =r.label :name
+        =r.text_field :name
+        p 
+        =r.label :image
+        =r.file_field :image
   p
   =f.submit "Ask"

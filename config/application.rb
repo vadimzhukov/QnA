@@ -20,11 +20,11 @@ module Qna
     # config.eager_load_paths << Rails.root.join("extras")
     config.generators do |g|
       g.test_framework :rspec,
-                        controller_specs: true,
-                        view_specs: false,
-                        helper_specs: false, 
-                        routing_specs: false,
-                        request_specs: false
+                       controller_specs: true,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                       request_specs: false
     end
 
     config.action_view.form_with_generates_remote_forms = true

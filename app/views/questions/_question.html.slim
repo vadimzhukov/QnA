@@ -9,7 +9,7 @@ li  id="question-#{question.id}"
       =link_to file.filename, url_for(file) 
       =button_to "Delete file", delete_file_question_path(question), method: :patch, params: {question: {id: question.id, file: file}}, remote: true
 
-  -if question.links.present?
+  -if question.links.any?
       -question.links.each do |link|
         =render "shared/link_with_gist_preview", link: link
 

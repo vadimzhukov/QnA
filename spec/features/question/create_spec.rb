@@ -8,7 +8,6 @@ feature "Create question", "
   given(:user) { create(:user) }
 
   describe "A11d user" do
-
     background do
       login(user)
       visit questions_path
@@ -41,7 +40,7 @@ feature "Create question", "
       fill_in "Title", with: "Test question title"
       fill_in "Body", with: "Test question body"
 
-      attach_file ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      attach_file "Files", ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
       click_on "Ask"
 
@@ -69,15 +68,28 @@ feature "Create question", "
       end
     end
 
+    scenario "User creates question with reward" do
+      click_on "Ask question"
+
+      fill_in "Title", with: "Test question title"
+      fill_in "Body", with: "Test question body"
+
+      within ".reward" do
+        fill_in "Name", with: "Medal"
+        attach_file "Image", "#{Rails.root}/spec/rails_helper.rb"
+      end
+
+      click_on "Ask"
+
+      expect(page).to have_content "The question was succesfully saved"
+    end
   end
 
   context "Una11d user" do
-
     scenario "user tries to add question" do
       visit questions_path
 
       expect(page).not_to have_link "Add question"
     end
   end
-
 end

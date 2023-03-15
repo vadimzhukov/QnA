@@ -25,8 +25,9 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-      @answer.mark_as_best
-      redirect_to @question
+    reward_user
+    @answer.mark_as_best
+    redirect_to @question
   end
 
   def delete_file
@@ -45,7 +46,8 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, :question_id, :rating, links_attributes: [:id, :name, :url, :_destroy])
+    params.require(:answer).permit(:body, :correct, :question_id, :rating,
+                                   links_attributes: [:id, :name, :url, :_destroy])
   end
 
   def answer_params_files
@@ -54,5 +56,9 @@ class AnswersController < ApplicationController
 
   def add_files
     @answer.files.attach(params[:answer][:files]) if params[:answer][:files].present?
+  end
+
+  def reward_user
+    @answer.user.reward_user(@answer)
   end
 end

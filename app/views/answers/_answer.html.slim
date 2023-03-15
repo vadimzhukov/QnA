@@ -7,13 +7,13 @@ div id="answer-#{answer.id}"
         =link_to file.filename, url_for(file)
         =button_to "Delete file", delete_file_answer_path(answer), method: :patch, params: {answer: {id: answer.id, file: file}}, remote: true
 
-    -if answer.links.present?
+    -if answer.links.any?
       -answer.links.each do |link|
         =render "shared/link_with_gist_preview", link: link
 
     -best_answer ||= false
 
-    -if !best_answer
+    -if !best_answer && answer.question.user == current_user
       =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, rating: 1}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
 
     =form_with model: answer,  class: "hidden", html: { id: "edit-answer-#{answer.id}"} do |f|

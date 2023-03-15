@@ -10,27 +10,28 @@ p=@question.body
   -@question.files.each do |file| 
     p=link_to file.filename, url_for(file)
 
--if @question.links.present?
+-if @question.links.any?
   h4 Links:
   .question-links
     -@question.links.each do |link|
       =render "shared/link_with_gist_preview", link: link
 
--if @question.answers.present?
+-if @question.answers.any?
   ol.answers-list
-    -best_answer = @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}.first
-    -not_best_answers = @question.answers.reject{|a| a == best_answer}
+    -best_answer =  @question.answers.order(updated_at: :desc).select { |a| a.rating > 0 && a.updated_at}.first
+    -not_best_answers =  @question.answers.reject{|a| a == best_answer || a.id.nil?}
     
     -if best_answer 
       .best-answer
         h3 Best answer
         =render partial: 'answers/answer', collection: [best_answer], locals: {best_answer: true}
-      -if !best_answer
-        h3 Answers to the question:
-        =render partial: 'answers/answer', collection: not_best_answers, locals: {best_answer: false}
+
+        -if not_best_answers.any?
+          h3 Answers to the question:
+          =render partial: 'answers/answer', collection: not_best_answers, locals: {best_answer: false}
     -else
       h3 Answers to the question:
-      =render partial: 'answers/answer', collection: @question.answers.order(:id), locals: {best_answer: false}
+      =render partial: 'answers/answer', collection:  @question.answers.order(:id).reject{|a| a.id.nil?}, locals: {best_answer: false}
 
 .answer-errors
   = render 'shared/errors', resource: @answer

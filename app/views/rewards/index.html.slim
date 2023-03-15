@@ -1,0 +1,12 @@
+h1 = "Rewards of #{current_user.email}"
+
+ol
+- @rewards.each do |r|
+  li
+    = "Вопрос: #{Question.find(r.rewardable_id).body}"
+    p
+    = "Награда за лучший ответ на вопрос: #{r.name}"
+    p
+    = image_tag r.image.preview(:thumb)
+    
+

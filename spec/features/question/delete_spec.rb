@@ -5,10 +5,9 @@ In order to clean site of bad question,
 As an a11d user,
 I can delete my question
 " do
-
   given!(:user1) { create(:user) }
   given!(:questions1) { create_list(:question, 5, user: user1) }
-  
+
   scenario "A11d user deletes his question" do
     login(user1)
     visit questions_path

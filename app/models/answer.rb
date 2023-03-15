@@ -14,7 +14,7 @@ class Answer < ApplicationRecord
   def mark_as_best
     transaction do
       Answer.where(question_id: question.id).update_all(rating: 0)
-      update(rating: 1) 
+      update(rating: 1)
     end
   end
 end

@@ -1,15 +1,15 @@
 require "rails_helper"
 
-
 feature "A11d user rates answer", "
   in order to show best answer on my question,
   as author of question,
   I can rate any answer as best
 " do
-
-  given!(:user1) { create(:user) }  
-  given!(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 5, user: user1, question: question) }
+  given!(:user1) { create(:user) }
+  given!(:user2) { create(:user) }
+  given(:reward) { create(:reward) }
+  given!(:question) { create(:question, user: user1, reward:) }
+  given!(:answers) { create_list(:answer, 5, user: user2, question:) }
 
   scenario "Author of question rates answer as best" do
     login(user1)
@@ -22,7 +22,6 @@ feature "A11d user rates answer", "
     within ".best-answer" do
       expect(page).to have_content answers[2].body
     end
-    
   end
 
   given!(:user2) { create(:user) }
@@ -39,7 +38,6 @@ feature "A11d user rates answer", "
 
     page.has_no_button? "Mark as best"
   end
-
 end
 
 feature "User see best answer", "
@@ -47,17 +45,16 @@ feature "User see best answer", "
   as user,
   I can see the best answer
 " do
-
-  given!(:user1) { create(:user) }  
-  given!(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 5, user: user1, question: question) }
+  given!(:user1) { create(:user) }
+  given!(:user2) { create(:user) }
+  given!(:question) { create(:question, user: user1) }
+  given!(:answers) { create_list(:answer, 5, user: user2, question:) }
 
   background do
     login(user1)
     visit question_path(question)
     click_on "Mark as best", id: "best-answer-btn-#{answers[2].id}"
   end
-
 
   scenario "Author of question see best answer" do
     within ".best-answer" do

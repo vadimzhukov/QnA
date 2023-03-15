@@ -14,7 +14,7 @@ feature "User can log out to end up session", "
     end
 
     scenario "logs out" do
-      click_button "Log out"
+      click_on "Log out"
 
       expect(page).to have_content "Log in"
       expect(page).to have_content "Email"

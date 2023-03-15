@@ -10,6 +10,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "jquery"
 import "@nathanvda/cocoon"
+import "gist-client"
 
 window.jQuery = $;
 window.$ = $;

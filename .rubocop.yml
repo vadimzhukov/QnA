@@ -1,0 +1,45 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'lib/**/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'storage/**/*'
+    - 'test/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/RedundantConstantBase:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
