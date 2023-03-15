@@ -12,4 +12,11 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  def best_answer
+    answers.order(updated_at: :desc).where(best: true).first
+  end
+
+  def not_best_answers
+    answers.where(best: false)
+  end
 end

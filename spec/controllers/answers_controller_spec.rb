@@ -120,40 +120,40 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #mark_as_best' do
-    let!(:answers) { create_list(:answer, 5, question:, user:, rating: 0) }
+    let!(:answers) { create_list(:answer, 5, question:, user:, best: false) }
     before { login(user) }
 
     context 'have best answer, but mark other answer as best' do
-      before { answers[0].update_attribute(:rating, 1) }
+      before { answers[0].update_attribute(:best, true) }
 
       it 'assigns answer to @answer' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1 }, question_id: question }, format: :js
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         expect(assigns(:answer)).to eq answers[1]
       end
 
-      it 'resets rating of other answers' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1 }, question_id: question }, format: :js
+      it 'resets bests of other answers' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         answers.each { |a| a.reload }
-        expect(answers.reject { |a| a == answers[1] }.map { |a| a.rating }.sum).to eq 0
+        expect(answers.reject { |a| a == answers[1] }.reduce(false) { |sum, a| sum = sum || a.best }).to eq false
       end
 
-      it 'sets rating of best answer to 1' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1 }, question_id: question }, format: :js
+      it 'sets answers best to true' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         answers.each { |a| a.reload }
-        expect(answers[1].rating).to eq 1
+        expect(answers[1].best).to eq true
       end
     end
 
     context 'do not have best answer and mark other answer as best' do
       it 'assigns answer to @answer' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1 }, question_id: question }, format: :js
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         expect(assigns(:answer)).to eq answers[1]
       end
 
-      it 'sets rating of best answer to 1' do
-        patch :mark_as_best, params: { id: answers[1].id, answer: { rating: 1 }, question_id: question }, format: :js
+      it 'sets answers best to true' do
+        patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
         answers.each { |a| a.reload }
-        expect(answers[1].rating).to eq 1
+        expect(answers[1].best).to eq true
       end
     end
   end

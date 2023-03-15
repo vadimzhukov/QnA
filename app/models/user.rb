@@ -9,7 +9,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   def reward_user(answer)
-    reward = Reward.find_by(rewardable_type: "Question", rewardable_id: answer.question.id)
-    self.rewards << Reward.find_by(rewardable_type: "Question", rewardable_id: answer.question.id) if reward
+    reward = answer.question.reward
+    self.rewards << reward if reward
+  end
+
+  def author_of?(record)
+   record.respond_to?(:user) && self.id == record.user.id
   end
 end

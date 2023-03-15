@@ -13,8 +13,10 @@ class Answer < ApplicationRecord
 
   def mark_as_best
     transaction do
-      Answer.where(question_id: question.id).update_all(rating: 0)
-      update(rating: 1)
+      Answer.where(question_id: question.id).update_all(best: false)
+      update(best: true)
+      user.reward_user(self)
     end
   end
+
 end

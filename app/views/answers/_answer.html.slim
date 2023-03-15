@@ -13,8 +13,8 @@ div id="answer-#{answer.id}"
 
     -best_answer ||= false
 
-    -if !best_answer && answer.question.user == current_user
-      =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, rating: 1}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
+    -if !best_answer && current_user&.author_of?(answer.question)
+      =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, best: true}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
 
     =form_with model: answer,  class: "hidden", html: { id: "edit-answer-#{answer.id}"} do |f|
       .field
@@ -33,11 +33,6 @@ div id="answer-#{answer.id}"
           =link_to_add_association "add link", f, :links
       p =f.submit "Save"
 
-    -if answer[:user_id] == current_user&.id
+    -if current_user&.author_of?(answer)
       p =link_to "Edit", "#", class: "edit-answer-link", data: { answer_id: answer.id }
       =button_to "delete", answer_path(answer), remote: true, method: :delete
-
-    
-    
-  
-    

@@ -32,7 +32,7 @@ li  id="question-#{question.id}"
         =link_to_add_association "add link", f, :links
     =f.submit "Save"
 
-  -if question[:user_id] == current_user&.id
+  -if current_user&.author_of?(question)
     p
     =link_to "Edit", "#", class: "edit-question-link", data: { question_id: question.id }
     p

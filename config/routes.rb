@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "/rewards", to: "rewards#index"
+  
   devise_for :users
   root to: "questions#index"
   resources :questions do
@@ -9,5 +9,5 @@ Rails.application.routes.draw do
       patch :delete_file, on: :member
     end
   end
-
+  resources :rewards, only: %i[index]
 end

@@ -3,11 +3,10 @@ h1 = "Rewards of #{current_user.email}"
 ol
 - @rewards.each do |r|
   li
-    = "Вопрос: #{Question.find(r.rewardable_id).body}"
+    = "Вопрос: #{r.rewardable.body}"
     p
     = "Награда за лучший ответ на вопрос: #{r.name}"
     p
-    - if r.image.previewable?
-      = image_tag r.image.preview(:thumb)
+    = image_tag r.image.preview(:thumb)
     
 
