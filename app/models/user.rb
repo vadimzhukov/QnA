@@ -8,12 +8,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  def reward_user(answer)
-    reward = answer.question.reward
-    self.rewards << reward if reward
+  def reward_user(reward)
+    self.rewards << reward if reward&.persisted?
   end
 
   def author_of?(record)
-   record.respond_to?(:user) && self.id == record.user.id
+   record.respond_to?(:user) && id == record.user_id
   end
 end

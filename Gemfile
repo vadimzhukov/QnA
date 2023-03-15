@@ -33,6 +33,7 @@ gem 'pg'
 gem 'jquery-rails'
 gem 'cocoon'
 gem 'validate_url'
+gem 'poppler'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
