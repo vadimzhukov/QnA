@@ -99,7 +99,7 @@ feature "Edit answer", "
       end
 
       within "#answer-#{answer.id}" do
-        click_button "Delete file"
+        click_button "delete file"
       end
 
       expect(current_path).to eq question_path(question)

@@ -4,5 +4,7 @@ $(document).on("turbolinks:load", function() {
     $(this).hide()
     const answerId = $(this).data("answerId")
     $("form#edit-answer-" + answerId).removeClass("hidden")
+    $("#delete-answer-" + answerId).hide()
+    $("#best-answer-btn-" + answerId).hide()
   })
 })

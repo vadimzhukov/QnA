@@ -11,7 +11,7 @@ I can delete my question
   scenario "A11d user deletes his question" do
     login(user1)
     visit questions_path
-    click_button "delete", id: questions1[0].id
+    click_button "Delete question", id: "delete-question-#{questions1[0].id}"
 
     expect(page).not_to have_content questions1[0].title
   end
@@ -23,12 +23,12 @@ I can delete my question
     login(user2)
     visit questions_path
 
-    page.has_no_button?("delete", id: questions1[0].id)
+    page.has_no_button?("Delete question", id: questions1[0].id)
   end
 
   scenario "Una11d user tries to delete question" do
     visit questions_path
 
-    page.has_no_button?("delete")
+    page.has_no_button?("Delete question")
   end
 end

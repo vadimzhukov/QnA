@@ -24,8 +24,8 @@ class QuestionsController < ApplicationController
       add_files
       redirect_to @question, notice: "The question was succesfully saved"
     else
-      flash.now[:alert] = "Error in question. The question was not saved"
-      render :new
+      flash.now[:alert] = "Error in question"
+      # render :new
     end
   end
 

@@ -14,7 +14,7 @@ I can delete my answer
     visit question_path(question)
 
     within "#answer-#{answers1[0].id}" do
-      click_button "delete"
+      click_button "Delete answer"
     end
 
     within ".answers-list" do
@@ -30,13 +30,13 @@ I can delete my answer
     visit question_path(question)
 
     within "#answer-#{answers1[0].id}" do
-      page.has_no_button? "delete"
+      page.has_no_button? "Delete answer"
     end
   end
 
   scenario "Una11d user tries to delete question" do
     visit questions_path
 
-    page.has_no_button? "delete"
+    page.has_no_button? "Delete question"
   end
 end
