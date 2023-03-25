@@ -1,0 +1,7 @@
+= fields_for @question do |f|
+  .field
+    = f.label :title
+    = f.text_field :title, class: "form-control"
+  .field
+    = f.label :body
+    = f.text_field :body, class: "form-control"

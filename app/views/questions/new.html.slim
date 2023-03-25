@@ -1,14 +1,11 @@
 h1 Ask your question
 
 =form_with model: @question, remote: true do |f|
-  =render "shared/errors", resource: @question
+  .errors
+    = render "shared/errors", resource: @question
   .form-group
-    .field
-      =f.label :title
-      =f.text_field :title, class: "form-control"
-    .field
-      =f.label :body
-      =f.text_area :body, class: "form-control"
+    .question_fields
+      = render 'question_fields'
     .field.mt-3
       h3 Files: 
       p
@@ -29,7 +26,7 @@ h1 Ask your question
           p
           =r.label :name
           =r.text_field :name, class: "form-control"
-          p 
+          p
           =r.label :image
           =r.file_field :image, class: "form-control"
 

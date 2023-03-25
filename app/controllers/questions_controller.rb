@@ -20,13 +20,10 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.new(question_params)
-    if @question.save
-      add_files
-      redirect_to @question, notice: "The question was succesfully saved"
-    else
-      flash.now[:alert] = "Error in question"
-      render :new
-    end
+    return unless @question.save
+
+    add_files
+    redirect_to @question, notice: "The question was successfully saved"
   end
 
   def update
