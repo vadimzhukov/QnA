@@ -14,8 +14,9 @@
   <body>
     <div class="container">
       <%= render "shared/nav" %>
-    <main role="main" class="container">
-      <%= yield %>
+      <main role="main" class="container">
+        <%= render "shared/flash" %>
+        <%= yield %>
       </main>
     </div>
   </body>

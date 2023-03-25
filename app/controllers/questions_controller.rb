@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
       redirect_to @question, notice: "The question was succesfully saved"
     else
       flash.now[:alert] = "Error in question"
-      # render :new
+      render :new
     end
   end
 
