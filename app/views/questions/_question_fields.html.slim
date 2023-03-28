@@ -1,0 +1,8 @@
+= fields_for question do |f|
+  .field
+    =f.label "Title:"
+    =f.text_field :title, class: "form-control"
+  .field 
+    =f.label "Body:"
+    =f.text_area :body, class: "form-control"
+    

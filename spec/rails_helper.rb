@@ -38,7 +38,13 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
 
-  Capybara.javascript_driver = :selenium_chrome_headless
+  # Capybara.javascript_driver = :selenium_chrome_headless
+  Capybara.register_driver :chrome do |app|
+    Capybara::Selenium::Driver.new app, browser: :chrome,
+      options: Selenium::WebDriver::Chrome::Options.new(args: %w[headless disable-gpu])
+  end
+  
+  Capybara.javascript_driver = :chrome
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

@@ -20,13 +20,10 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.new(question_params)
-    if @question.save
-      add_files
-      redirect_to @question, notice: "The question was succesfully saved"
-    else
-      flash.now[:alert] = "Error in question"
-      render :new
-    end
+    return unless @question.save
+
+    add_files
+    redirect_to @question, notice: "The question was succesfully saved"
   end
 
   def update
@@ -52,7 +49,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy],
-                                                    reward_attributes: [:name, :image, :_destroy])
+                                                    reward_attributes: [:id, :name, :image, :_destroy])
   end
 
   def question_params_files

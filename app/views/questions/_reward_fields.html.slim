@@ -1,0 +1,8 @@
+.nested-fields
+  .form-group
+    .field
+      = reward.label :name
+      = reward.text_field :name, class: "form-control"
+    .field 
+      = reward.label :image
+      = reward.file_field :image, class: "form-control"
