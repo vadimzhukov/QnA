@@ -13,7 +13,7 @@ module Voted
       if vote.save
         format.json do
           render json: { id: @votable.id, votes_count: @votable.votes.count,
-                         current_user_voted: @votable.voted_by_user?(current_user) }
+                         current_user_voted: true }
         end
       end
     end
@@ -28,7 +28,7 @@ module Voted
       if vote.destroy
         format.json do
           render json: { id: @votable.id, votes_count: @votable.votes.count,
-                         current_user_voted: @votable.voted_by_user?(current_user) }
+                         current_user_voted: false }
         end
       end
     end
