@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!
   before_action :load_answer, only: [:show, :edit, :update, :destroy, :mark_as_best, :delete_file]
   before_action :load_question, only: [:new, :create, :mark_as_best]

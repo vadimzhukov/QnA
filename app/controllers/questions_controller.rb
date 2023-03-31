@@ -1,6 +1,8 @@
 class QuestionsController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file, :like, :dislike]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
 
   def index
     @questions = Question.all.order(created_at: :asc)
@@ -40,31 +42,11 @@ class QuestionsController < ApplicationController
     @question.files.find(params[:question][:file].to_i).purge
     @question.reload
   end
-  
-  def like
-    vote = @question.votes.new(user: current_user)
-
-    respond_to do |format|
-      if vote.save
-        format.json { render json: { question: @question, votes_count: @question.votes.count, current_user_votes: @question.votes.where(user: current_user).count} }
-      end
-    end
-  end
-
-  def dislike
-    vote = @question.votes.find_by(user: current_user)
-
-    respond_to do |format|
-      if vote.destroy
-        format.json { render json: { question: @question, votes_count: @question.votes.count, current_user_votes: @question.votes.where(user: current_user).count} }
-      end
-    end
-  end
 
   private
 
   def load_question
-    @question = Question.with_attached_files.preload(:answers).find(params[:id])
+    @question = Question.with_attached_files.preload(:answers).preload(:votes).find(params[:id])
   end
 
   def question_params
