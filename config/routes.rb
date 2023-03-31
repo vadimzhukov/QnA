@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       patch :mark_as_best, on: :member
       patch :delete_file, on: :member
     end
+    patch :like, on: :member
+    patch :dislike, on: :member 
   end
   resources :rewards, only: %i[index]
 end

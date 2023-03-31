@@ -27,6 +27,19 @@
         p.mt-3
           =render "questions/reward", reward: question.reward
 
+      .votes
+        - if question.votes.find_by(user: current_user) 
+          - like = "btn disabled"
+          - dislike = ""
+        - else 
+          - like = ""
+          - dislike = "btn disabled"
+          
+        = link_to "Like", like_question_path(question), remote: true, method: :patch,  class: "like-question #{like}", data: { question_id: question.id, type: :json }
+        div id="votes-count-#{question.id}"
+          = question.votes.count
+        = link_to "Dislike", dislike_question_path(question), remote: true, method: :patch,  class: "dislike-question #{dislike}", data: { question_id: question.id, type: :json }
+
     =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
       .form-group
         .question_fields 
