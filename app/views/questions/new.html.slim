@@ -1,33 +1,29 @@
 h1 Ask your question
-=render "shared/errors", resource: @question
 
-=form_with model: @question do |f|
-  .field
-    =f.label :title
-    =f.text_field :title
-  .field
-    =f.label :body
-    =f.text_area :body
-  .field
-    h3 Files: 
-    p
-    =f.label :files
-    =f.file_field :files, multiple: true
-  .field
-    h3 Links:
-    #links
-      =f.fields_for :links do |link|
-        =render "link_fields", f: link
-      .links 
-        =link_to_add_association "add link", f, :links
-    .field.reward
+= form_with model: @question, remote: true do |f|
+  .errors
+    = render "shared/errors", resource: @question
+  .form-group
+    .question_fields
+      = render "question_fields", question: @question
+    .field.mt-3
+      h3 Files: 
+      p
+      = f.label :files
+      = f.file_field :files, multiple: true, class: "form-control"
+      
+    .field.mt-3
+      h3 Links:
+      #links
+        = f.fields_for :links do |link|
+          = render "link_fields", f: link
+        .links 
+          = link_to_add_association "add link", f, :links
+
+    .field.form-group.mt-3
       h3 Reward:
-      =f.fields_for :reward do |r|
-        p
-        =r.label :name
-        =r.text_field :name
-        p 
-        =r.label :image
-        =r.file_field :image
-  p
-  =f.submit "Ask"
+      #reward
+        = f.fields_for :reward do |reward|
+         = render "reward_fields", reward: reward
+
+  = f.submit "Ask question", class: "btn btn-success my-3"

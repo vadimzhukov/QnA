@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
+gem 'image_processing'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -34,6 +34,7 @@ gem 'jquery-rails'
 gem 'cocoon'
 gem 'validate_url'
 gem 'poppler'
+gem 'popper'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -2,28 +2,22 @@
 <html>
   <head>
     <title>Qna</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'answers', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'questions', 'data-turbolinks-track': 'reload' %>
   </head>
-
   <body>
-    <nav align="right">
-      <% if user_signed_in? %>
-        <%= link_to "My rewards", rewards_path %> | <%= link_to "Log out", destroy_user_session_path, method: :delete %>
-        
-      <% end %>
-      <% flash.each do |type, msg| %>
-        <div class="<%="flash-#{type.to_s}"%>">
-          <%= msg %>
-        </div>
-      <% end %>
-    </nav>
-    <%= yield %>
+    <div class="container">
+      <%= render "shared/nav" %>
+      <main role="main" class="container">
+        <%= render "shared/flash" %>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

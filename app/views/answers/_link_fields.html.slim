@@ -1,9 +1,10 @@
 .nested-fields 
-  .field 
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :url
-    = f.text_field :url
-    
-  = link_to_remove_association "remove link", f
+  .form-group
+    .field 
+      = f.label :name
+      = f.text_field :name, class: "form-control"
+    .field
+      = f.label :url
+      = f.text_field :url, class: "form-control"
+ 
+  = link_to_remove_association "remove link", f, class: "mt-3"

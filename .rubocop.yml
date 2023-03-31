@@ -43,3 +43,6 @@ Style/WordArray:
 
 Bundler/OrderedGems:
   Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false

@@ -1,47 +1,55 @@
 =render "shared/errors", resource: @question
 
-h3 Question #{@question.id}
+article.card
+  .card-body
+    h5 Question #{@question.id}
 
-h2=@question.title
+    h2=@question.title
 
-p=@question.body
+    article.card
+      .card-body
+        =@question.body
 
--if @question.files.attached?
-  -@question.files.each do |file| 
-    p=link_to file.filename, url_for(file)
+    -if @question.files.attached?
+      h6.mt-3 Files of question:
+      -@question.files.each do |file| 
+        p=link_to file.filename, url_for(file)
 
--if @question.links.any?
-  h4 Links:
-  .question-links
-    -@question.links.each do |link|
-      =render "shared/link_with_gist_preview", link: link
+    -if @question.links.any?
+      h6.mt-3 Links of question:
+      .question-links
+        -@question.links.each do |link|
+          =render "shared/link_with_gist_preview", link: link
 
--if @question.answers.any?
-  ol.answers-list
-    -if @question.best_answer 
-      .best-answer
-        h3 Best answer
-        =render partial: 'answers/answer', collection: [@question.best_answer], locals: {best_answer: true}
+    -if @question.answers.any?
+      .answers-list
+        -if @question.best_answer 
+          .best-answer
+            h4 Best answer
+            =render partial: 'answers/answer', collection: [@question.best_answer], locals: {best_answer: true}
 
-    h3 Answers to the question:
-    =render partial: 'answers/answer', collection:  @question.not_best_answers.order(:id), locals: {best_answer: false}
+        h4 Answers to the question:
+        =render partial: 'answers/answer', collection:  @question.not_best_answers.order(:id), locals: {best_answer: false}
 
-.answer-errors
-  = render 'shared/errors', resource: @answer
+    .answer-errors
+      = render 'shared/errors', resource: @answer
 
--if user_signed_in?
-  =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
-    .field
-      =f.label "New answer:"
-      =f.text_area :body
-    .field
-      =f.label :files
-      =f.file_field :files, multiple: true
-    h3 Links:
-    #links 
-      =f.fields_for :links do |link|
-        =render "link_fields", f: link
-      .links 
-        =link_to_add_association "add link", f, :links
+    h3.mt-3 Submit your answer
+    -if user_signed_in?
+      =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
+        .form-group
+          .field
+            =f.label "New answer:"
+            =f.text_area :body, class: "form-control"
+          .field
+            =f.label :files
+            =f.file_field :files, multiple: true, class: "form-control"
+          h5.mt-3 Links for answer:
+          #links 
+            =f.fields_for :links do |link|
+              =render "link_fields", f: link, class: "form-control"
+            .links.mt-3 
+              =link_to_add_association "add link", f, :links
+        .mt-3    
+        =f.submit "Submit answer", class: "btn btn-success"
         
-    p =f.submit "Submit answer"

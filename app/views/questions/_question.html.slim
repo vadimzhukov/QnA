@@ -1,39 +1,56 @@
-li  id="question-#{question.id}"
-  =link_to question.title, question_path(question)
-  p 
-  =question.body 
-  
-  -if question.files.attached?
-    -question.files.each do |file|
+.card 
+  .card-body id="question-#{question.id}"
+    .errors
+      = render "shared/errors", resource: question
+    .current-content
+      h2 =link_to question.title, question_path(question)
       p 
-      =link_to file.filename, url_for(file) 
-      =button_to "Delete file", delete_file_question_path(question), method: :patch, params: {question: {id: question.id, file: file}}, remote: true
+      h3 =question.body 
 
-  -if question.links.any?
-      -question.links.each do |link|
-        =render "shared/link_with_gist_preview", link: link
+      -if question.links.any?
+        h3 Links of question:
+        -question.links.each do |link|
+          p.mt-3
+            =render "shared/link_with_gist_preview", link: link
+      
+      -if question.files.attached?
+        -question.files.each do |file|
+          p
+          .btn-group 
+            =link_to file.filename, url_for(file) 
+            =button_to "Delete file", delete_file_question_path(question), method: :patch, 
+                        params: {question: {id: question.id, file: file}}, remote: true,
+                        class: "btn btn-outline-danger btn-sm mx-3"
+      
+      -if question.reward.present?
+        h3 Reward of question:
+        p.mt-3
+          =render "questions/reward", reward: question.reward
 
-  =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
-    .field
-      =f.label :title 
-      =f.text_field :title
-    .field 
-      =f.label :body
-      =f.text_area :body
-    .field 
-      =f.label "Files"
-      =f.file_field :files, multiple: true
-    .field 
-    h3 Links:
-    #links 
-      =f.fields_for :links do |link|
-        =render "link_fields", f: link
-      .links 
-        =link_to_add_association "add link", f, :links
-    =f.submit "Save"
+    =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
+      .form-group
+        .question_fields 
+          = render "question_fields", question: question
+        .field.my-3 
+          =f.label "Files:"
+          =f.file_field :files, multiple: true, class: "form-control"
+        .field.my-3 
+          h3 Links:
+          #links.my-3
+            =f.fields_for :links do |link|
+              =render "link_fields", f: link
+            .links 
+              =link_to_add_association "add link", f, :links
+        .field.mt-3
+          h3 Reward:
+          #reward
+            = f.fields_for :reward do |reward|
+              = render "reward_fields", reward: reward
+            
+      =f.submit "Save question", class: "btn btn-success"
 
-  -if current_user&.author_of?(question)
-    p
-    =link_to "Edit", "#", class: "edit-question-link", data: { question_id: question.id }
-    p
-    =button_to "delete", question_path(question), method: :delete, id: question.id
+
+    -if current_user&.author_of?(question)
+      .btn-group
+        =link_to "Edit question", "#", class: "edit-question-link btn btn-light m-1", data: { question_id: question.id }
+        =button_to "Delete question", question_path(question), method: :delete, class: "btn btn-danger mt-1", id: "delete-question-#{question.id}"

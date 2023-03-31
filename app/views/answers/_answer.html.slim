@@ -1,11 +1,15 @@
-div id="answer-#{answer.id}"
-  li
+article.card
+  .card-body id="answer-#{answer.id}"
     =answer.body
+
+    p
     -if answer.files.attached?
-      -answer.files.each do |file|
+      -answer.files.each do |file| 
         p
-        =link_to file.filename, url_for(file)
-        =button_to "Delete file", delete_file_answer_path(answer), method: :patch, params: {answer: {id: answer.id, file: file}}, remote: true
+          .btn-group
+            =link_to file.filename, url_for(file)
+            =button_to "delete file", delete_file_answer_path(answer), method: :patch,
+                      params: {answer: {id: answer.id, file: file}}, remote: true, class: "btn btn-outline-danger btn-sm mx-3"
 
     -if answer.links.any?
       -answer.links.each do |link|
@@ -13,26 +17,32 @@ div id="answer-#{answer.id}"
 
     -best_answer ||= false
 
-    -if !best_answer && current_user&.author_of?(answer.question)
-      =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, params: {answer: {id: answer.id, best: true}, question_id: answer.question.id}, remote: true, id: "best-answer-btn-#{answer.id}"
+    p
+    .btn-group
+      -if current_user&.author_of?(answer)
+        =link_to "Edit answer", "#", class: "edit-answer-link btn btn-light m-1", data: { answer_id: answer.id }
+        =button_to "Delete answer", answer_path(answer), remote: true, method: :delete, class: "btn btn-danger m-1", id: "delete-answer-#{answer.id}"
+      -if !best_answer && current_user&.author_of?(answer.question)
+        =button_to "Mark as best", mark_as_best_answer_path(answer), method: :patch, 
+                  params: {answer: {id: answer.id, best: true}, question_id: answer.question.id}, 
+                  remote: true, id: "best-answer-btn-#{answer.id}", class: "btn btn-warning m-1"
+      
+        
 
     =form_with model: answer,  class: "hidden", html: { id: "edit-answer-#{answer.id}"} do |f|
-      .field
-        =f.label "New answer:"
-        br
-        =f.text_area :body
-      .field
+      .field.form-group
+        =f.label "Changed answer:" 
+        p =f.text_area :body, class: "form-control"
+      .field.form-group
         =f.label :files
         br
-        =f.file_field :files, multiple: true
-      h3 Links:
-      #links 
+        =f.file_field :files, multiple: true, class: "form-control"
+      h3.mt-3 Links:
+      #links.my-3
         =f.fields_for :links do |link|
           =render "link_fields", f: link
-        .links 
-          =link_to_add_association "add link", f, :links
-      p =f.submit "Save"
+        .links
+          =link_to_add_association "add link to answer", f, :links
+      p =f.submit "Save answer", class: "btn btn-success"
 
-    -if current_user&.author_of?(answer)
-      p =link_to "Edit", "#", class: "edit-answer-link", data: { answer_id: answer.id }
-      =button_to "delete", answer_path(answer), remote: true, method: :delete
+    

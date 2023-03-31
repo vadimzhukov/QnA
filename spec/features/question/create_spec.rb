@@ -13,32 +13,33 @@ feature "Create question", "
       visit questions_path
     end
 
-    scenario "user asks question with correct body" do
+    scenario "user asks question with correct body", js: true do
       click_on "Ask question"
 
-      fill_in "Title", with: "Test question title"
-      fill_in "Body", with: "Test question body"
-      click_on "Ask"
+      fill_in id: "question_title", with: "Test question title"
+
+      fill_in id: "question_body", with: "Test question body"
+      click_on "Ask question"
 
       expect(page).to have_content "Test question title"
       expect(page).to have_content "Test question body"
     end
 
-    scenario "user asks question with invalid empty body" do
+    scenario "user asks question with invalid empty body", js: true do
       click_on "Ask question"
 
-      fill_in "question_title", with: "Test question title"
+      fill_in id: "question_title", with: "Test question title"
 
       click_on "Ask"
 
-      expect(page).to have_content "Error in question"
+      expect(page).to have_content "Body can't be blank"
     end
 
-    scenario "User creates question with files" do
+    scenario "User creates question with files", js: true do
       click_on "Ask question"
 
-      fill_in "Title", with: "Test question title"
-      fill_in "Body", with: "Test question body"
+      fill_in id: "question_title", with: "Test question title"
+      fill_in id: "question_body", with: "Test question body"
 
       attach_file "Files", ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
@@ -50,11 +51,11 @@ feature "Create question", "
       expect(page).to have_link "spec_helper.rb"
     end
 
-    scenario "User creates question with valid link" do
+    scenario "User creates question with valid link", js: true do
       click_on "Ask question"
 
-      fill_in "Title", with: "Test question title"
-      fill_in "Body", with: "Test question body"
+      fill_in id: "question_title", with: "Test question title"
+      fill_in id: "question_body", with: "Test question body"
 
       within "#links" do
         fill_in "Name", with: "yandex"
@@ -68,15 +69,15 @@ feature "Create question", "
       end
     end
 
-    scenario "User creates question with reward" do
+    scenario "User creates question with reward", js: true do
       click_on "Ask question"
 
-      fill_in "Title", with: "Test question title"
-      fill_in "Body", with: "Test question body"
+      fill_in id: "question_title", with: "Test question title"
+      fill_in id: "question_body", with: "Test question body"
 
-      within ".reward" do
-        fill_in "Name", with: "Medal"
-        attach_file "Image", "#{Rails.root}/spec/rails_helper.rb"
+      within "#reward" do
+        fill_in id: "question_reward_attributes_name", with: "Medal"
+        find(id: "question_reward_attributes_image").attach_file("#{Rails.root}/spec/rails_helper.rb")
       end
 
       click_on "Ask"
