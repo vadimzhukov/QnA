@@ -1,18 +1,27 @@
 $(document).on("turbolinks:load", function() {
   $(".votes").on("ajax:success", function(e) {
     const votableId = e.detail[0].id
-    const votesCount = e.detail[0].votes_count
-    const current_user_voted = e.detail[0].current_user_voted
+    const votesSum = e.detail[0].votes_sum
+  
+    const vote_direction = e.detail[0].vote_direction
 
-    $("#votes-count-" + votableId).html("<span>" + votesCount + "</span>");
-    if (current_user_voted) {
-      console.log("[data-votable-id = '" + votableId + "', .like-votable")
-      console.log("[data-votable-id = '" + votableId + "', .dislike-votable]")
-      $(".like-votable[data-votable-id='" + votableId + "']").addClass("btn btn-link disabled")
-      $(".dislike-votable[data-votable-id='" + votableId + "']").removeClass("btn btn-link disabled")
+    // этот код тоже похоже не оптимален :( как его можно улучшить?
+    $("#votes-count-" + votableId).html("<span>" + votesSum + "</span>");
+    if (vote_direction === true) {
+      $(".like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+      $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+      $(".reset-like-votable[data-votable-id='" + votableId + "']").removeClass("hidden")
+      $(".reset-dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+    } else if (vote_direction === false) {
+      $(".like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+      $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+      $(".reset-like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+      $(".reset-dislike-votable[data-votable-id='" + votableId + "']").removeClass("hidden")
     } else {
-      $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("btn btn-link disabled")
-      $(".like-votable[data-votable-id='" + votableId + "']").removeClass("btn btn-link disabled")
+      $(".like-votable[data-votable-id='" + votableId + "']").removeClass("hidden")
+      $(".dislike-votable[data-votable-id='" + votableId + "']").removeClass("hidden")
+      $(".reset-like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
+      $(".reset-dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
     }
   })
 })

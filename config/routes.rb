@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     member do
       patch :like
       patch :dislike
+      patch :reset_vote
     end
   end
 

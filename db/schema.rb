@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 2023_03_31_132745) do
     t.string "votable_type"
     t.bigint "votable_id"
     t.bigint "user_id"
+    t.boolean "direction", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_votes_on_user_id"
