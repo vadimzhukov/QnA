@@ -60,7 +60,9 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves question to database' do
-        expect { post :create, params: { question: attributes_for(:question) }, format: :js }.to change(Question, :count).by(1)
+        expect do
+          post :create, params: { question: attributes_for(:question) }, format: :js
+        end.to change(Question, :count).by(1)
       end
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }, format: :js
@@ -121,5 +123,4 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'voted' do
     it_behaves_like 'voted'
   end
-
 end

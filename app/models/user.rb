@@ -9,10 +9,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   def reward_user(reward)
-    self.rewards << reward if reward&.persisted?
+    rewards << reward if reward&.persisted?
   end
 
   def author_of?(record)
-   record.respond_to?(:user) && id == record.user_id
+    record.respond_to?(:user) && id == record.user_id
   end
 end

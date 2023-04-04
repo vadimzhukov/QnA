@@ -22,10 +22,8 @@ require 'capybara/rspec'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
-
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 Dir[Rails.root.join('spec', 'models', 'concerns', '*.rb')].each { |f| require f }
-
 Dir[Rails.root.join('spec', 'controllers', 'concerns', '*.rb')].each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
@@ -45,9 +43,9 @@ RSpec.configure do |config|
   # Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new app, browser: :chrome,
-      options: Selenium::WebDriver::Chrome::Options.new(args: %w[headless disable-gpu])
+                                        options: Selenium::WebDriver::Chrome::Options.new(args: %w[headless disable-gpu])
   end
-  
+
   Capybara.javascript_driver = :chrome
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

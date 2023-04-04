@@ -1,16 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe RewardsController, type: :controller do
-
   let(:reward1) { create(:reward) }
   let(:reward2) { create(:reward) }
 
   let!(:user) { create(:user, rewards: [reward1, reward2]) }
-  
-  describe 'GET #index' do
 
-  before { login(user) }
-  before { get :index }
+  describe 'GET #index' do
+    before { login(user) }
+    before { get :index }
     it 'assigns user rewards to @rewards' do
       expect(assigns(:rewards)).to eq(user.rewards)
     end

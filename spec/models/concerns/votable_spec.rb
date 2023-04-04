@@ -1,11 +1,11 @@
 require "rails_helper"
 
 shared_examples_for "votable" do
-  it { should have_many(:votes).dependent(:destroy)}
+  it { should have_many(:votes).dependent(:destroy) }
 
-  let!(:users) {create_list(:user,6)}
-  let!(:votable) { create(described_class.to_s.underscore.to_sym, user: users[0])}
-  
+  let!(:users) { create_list(:user, 6) }
+  let!(:votable) { create(described_class.to_s.underscore.to_sym, user: users[0]) }
+
   it "check voted_by_user?" do
     votable.votes.create(user: users[1], direction: true)
     expect(votable.voted_by_user?(users[1])).to be_truthy
@@ -30,6 +30,4 @@ shared_examples_for "votable" do
     votable.votes.create(user: users[1], direction: false)
     expect(votable.user_disliked?(users[1])).to be_truthy
   end
-
-  
 end
