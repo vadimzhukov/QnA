@@ -10,4 +10,8 @@ RSpec.describe Answer, type: :model do
   it "Has attached many files" do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
+
+  describe "check for votability" do
+    it_behaves_like "votable"
+  end
 end

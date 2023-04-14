@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
 
@@ -44,7 +46,7 @@ class QuestionsController < ApplicationController
   private
 
   def load_question
-    @question = Question.with_attached_files.preload(:answers).find(params[:id])
+    @question = Question.with_attached_files.preload(:answers).preload(:votes).find(params[:id])
   end
 
   def question_params

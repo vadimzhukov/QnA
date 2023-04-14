@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Votable
+
   belongs_to :question
   belongs_to :user
 
@@ -18,5 +20,4 @@ class Answer < ApplicationRecord
       user.reward_user(question.reward)
     end
   end
-
 end

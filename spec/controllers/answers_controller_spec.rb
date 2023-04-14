@@ -132,13 +132,13 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'resets bests of other answers' do
         patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
-        answers.each { |a| a.reload }
-        expect(answers.reject { |a| a == answers[1] }.reduce(false) { |sum, a| sum = sum || a.best }).to eq false
+        answers.each(&:reload)
+        expect(answers.reject { |a| a == answers[1] }.reduce(false) { |sum, a| sum ||= a.best }).to eq false
       end
 
       it 'sets answers best to true' do
         patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
-        answers.each { |a| a.reload }
+        answers.each(&:reload)
         expect(answers[1].best).to eq true
       end
     end
@@ -151,9 +151,13 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'sets answers best to true' do
         patch :mark_as_best, params: { id: answers[1].id, answer: { best: true }, question_id: question }, format: :js
-        answers.each { |a| a.reload }
+        answers.each(&:reload)
         expect(answers[1].best).to eq true
       end
     end
+  end
+
+  describe 'voted' do
+    it_behaves_like 'voted'
   end
 end

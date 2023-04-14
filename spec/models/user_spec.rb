@@ -20,19 +20,18 @@ RSpec.describe User, type: :model do
       expect(not_author.author_of?(question)).to be false
       expect(not_author.author_of?(answer)).to be false
     end
-
   end
 
   describe "#reward_user" do
-  let!(:author_of_question) { create(:user) }
-  let!(:author_of_answer) { create(:user) }
+    let!(:author_of_question) { create(:user) }
+    let!(:author_of_answer) { create(:user) }
 
-  let(:reward) { create(:reward) }
-  let!(:question) { create(:question, user: author_of_question, reward:) }
-  let!(:answer) { create(:answer, user: author_of_answer) }
+    let(:reward) { create(:reward) }
+    let!(:question) { create(:question, user: author_of_question, reward:) }
+    let!(:answer) { create(:answer, user: author_of_answer) }
 
-  it "reward author of best answer" do
-    expect{ author_of_answer.reward_user(question.reward)}.to change(author_of_answer.rewards, :count).by(1)
-  end
+    it "reward author of best answer" do
+      expect { author_of_answer.reward_user(question.reward) }.to change(author_of_answer.rewards, :count).by(1)
+    end
   end
 end

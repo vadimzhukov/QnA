@@ -1,0 +1,49 @@
+- if user_signed_in?
+
+  / этот код просто ужасен :( как его можно красиво исправить?
+  .votes
+    - if current_user&.author_of?(votable)
+      - like_class = "hidden"
+      - dislike_class = "hidden"
+      - reset_like_class = "hidden"
+      - reset_dislike_class = "hidden"
+    - elsif votable.user_liked?(current_user)
+      - like_class = "btn btn-link disable hidden"
+      - dislike_class = "btn btn-link hidden"
+      - reset_like_class = "btn btn-link"
+      - reset_dislike_class = "btn btn-link hidden"
+    - elsif votable.user_disliked?(current_user)
+      - like_class = "btn btn-link hidden"
+      - dislike_class = "btn btn-link hidden"
+      - reset_like_class = "btn btn-link hidden"
+      - reset_dislike_class = "btn btn-link"
+    - else 
+      - like_class = "btn btn-link"
+      - dislike_class = "btn btn-link"
+      - reset_like_class = "btn btn-link hidden"
+      - reset_dislike_class = "btn btn-link hidden"
+
+    <div> Rating: 
+    span id="votes-count-#{votable.id}" class="px-2"
+      = votable.votes_sum
+    = link_to polymorphic_path(votable, action: :like), remote: true, method: :patch,  
+                      class: "like-votable #{like_class} px-2", 
+                      data: { votable_id: votable.id, type: :json } do
+                        <i class="bi bi-hand-thumbs-up"></i>
+
+    = link_to polymorphic_path(votable, action: :reset_vote), remote: true, method: :patch,  
+                      class: "reset-like-votable #{reset_like_class} px-2", 
+                      data: { votable_id: votable.id, type: :json } do
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
+
+    = link_to polymorphic_path(votable, action: :dislike), remote: true, method: :patch,  
+                      class: "like-votable #{dislike_class} px-2", 
+                      data: { votable_id: votable.id, type: :json } do
+                        <i class="bi bi-hand-thumbs-down"></i>
+
+    = link_to polymorphic_path(votable, action: :reset_vote), remote: true, method: :patch,  
+                          class: "reset-dislike-votable #{reset_dislike_class} px-2", 
+                          data: { votable_id: votable.id, type: :json } do 
+                            <i class="bi bi-hand-thumbs-down-fill"></i>
+
+    </div>
