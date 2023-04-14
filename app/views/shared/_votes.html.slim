@@ -23,7 +23,9 @@
       - reset_like_class = "btn btn-link hidden"
       - reset_dislike_class = "btn btn-link hidden"
 
-      
+    <div> Rating: 
+    span id="votes-count-#{votable.id}" class="px-2"
+      = votable.votes_sum
     = link_to polymorphic_path(votable, action: :like), remote: true, method: :patch,  
                       class: "like-votable #{like_class} px-2", 
                       data: { votable_id: votable.id, type: :json } do
@@ -44,5 +46,4 @@
                           data: { votable_id: votable.id, type: :json } do 
                             <i class="bi bi-hand-thumbs-down-fill"></i>
 
-    span id="votes-count-#{votable.id}" class="px-2"
-      = votable.votes_sum
+    </div>

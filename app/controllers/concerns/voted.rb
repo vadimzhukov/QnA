@@ -16,7 +16,7 @@ module Voted
                          current_user_voted: true, vote_direction: true }
         end
       else
-        format.json { render json: @votable.errors.full_messages }
+        format.json { render json: @votable.errors.full_messages, status: :unprocessible_entity }
       end
     end
   end
@@ -32,7 +32,7 @@ module Voted
                          vote_direction: false }
         end
       else
-        format.json { render json: @votable.errors.full_messages }
+        format.json { render json: @votable.errors.full_messages, status: :unprocessible_entity }
       end
     end
   end
@@ -48,7 +48,7 @@ module Voted
                          vote_direction: nil }
         end
       else
-        format.json { render json: @votable.errors.full_messages }
+        format.json { render json: @votable.errors.full_messages, status: :unprocessible_entity }
       end
     end
   end
