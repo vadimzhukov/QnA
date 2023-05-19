@@ -1,5 +1,6 @@
 $(document).on("turbolinks:load", function() {
   $(".votes").on("ajax:success", function(e) {
+    console.log("--- мы тут пытаемся поменять голосовалку ----")
     const votableId = e.detail[0].id
     const votesSum = e.detail[0].votes_sum
   

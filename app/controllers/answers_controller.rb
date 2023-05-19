@@ -3,8 +3,10 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :load_answer, only: [:show, :edit, :update, :destroy, :mark_as_best, :delete_file]
-  before_action :load_question, only: [:new, :create, :mark_as_best]
+  before_action :load_question, only: [:new, :create, :mark_as_best, :publish_answer]
 
+  after_action :publish_answer, only: [:create]
+  
   def new
     @answer = @question.answers.new
   end
@@ -57,5 +59,36 @@ class AnswersController < ApplicationController
 
   def add_files
     @answer.files.attach(params[:answer][:files]) if params[:answer][:files].present?
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    gon.push({
+      :current_user_id => current_user.id
+    })
+
+    logger.info "===gon.question_id: #{gon.question_id}==="
+
+    files = @answer.files.map { |file| { name: file.filename.to_s, url: url_for(file) } }
+    links = @answer.links.map { |link| { name: link.name, url: link.url } }
+
+    votes = {
+            votes_sum: @question.votes_sum,
+            like_url: polymorphic_path(@question, action: :like),
+            dislike_url: polymorphic_path(@question, action: :dislike),
+            reset_url: polymorphic_path(@question, action: :reset_vote)
+            }
+
+    ActionCable.server.broadcast(
+      "question_channel_#{@question.id}", 
+      { answer: @answer.attributes.merge(files: files, 
+                                          links: links, 
+                                          votes: votes,
+                                          url: url_for(@answer),
+                                          author_id: @answer.user.id
+                                        ) 
+      }      
+    )
   end
 end
