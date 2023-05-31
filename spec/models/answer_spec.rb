@@ -14,4 +14,8 @@ RSpec.describe Answer, type: :model do
   describe "check for votability" do
     it_behaves_like "votable"
   end
+
+  describe "check for commentability" do
+    it_behaves_like "commentable"
+  end
 end

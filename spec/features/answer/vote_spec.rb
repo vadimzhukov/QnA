@@ -10,7 +10,7 @@ feature "Vote for answer", "
   given!(:answer1) { create(:answer, question:, user: users[0]) }
   given!(:answer2) { create(:answer, question:, user: users[1]) }
 
-  fdescribe "A11d user" do
+  describe "A11d user" do
     background do
       login(users[0])
       visit question_path(question)

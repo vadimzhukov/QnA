@@ -1,10 +1,16 @@
 import consumer from "./consumer"
+import channelExisted from "./check_existed_channel"
+import {renderLikes} from "../packs/vote.js"
+
+
 const templateQuestion = require("../templates/question.hbs")
 
 $(document).on("turbolinks:load", function() {
   
   const questionsList = $(".questions-list")
   const channel = "QuestionsChannel"
+
+  if (channelExisted(channel)) return
 
   consumer.subscriptions.create(channel, {
     connected() {
@@ -16,11 +22,15 @@ $(document).on("turbolinks:load", function() {
     },
 
     received(data) {
-      if (gon.current_user_id != data.question.author_id || !gon.current_user_id) {
-        data.userSignedIn = document.cookie.indexOf("signed_in=1") > -1;
-        const question = templateQuestion(data)
-        questionsList.append(question)
-      }
+      if (gon.sid === data.sid) return
+      
+      const userSignedIn = document.cookie.includes("signed_in=1")
+
+      data.userSignedIn = userSignedIn
+      const question = templateQuestion(data)
+      questionsList.append(question)
+      
+      renderLikes()
     }
   });
 });

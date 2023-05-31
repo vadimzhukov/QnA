@@ -1,7 +1,9 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!
+
   before_action :load_answer, only: [:show, :edit, :update, :destroy, :mark_as_best, :delete_file]
   before_action :load_question, only: [:new, :create, :mark_as_best, :publish_answer]
 
@@ -64,12 +66,6 @@ class AnswersController < ApplicationController
   def publish_answer
     return if @answer.errors.any?
 
-    gon.push({
-      :current_user_id => current_user.id
-    })
-
-    logger.info "===gon.question_id: #{gon.question_id}==="
-
     files = @answer.files.map { |file| { name: file.filename.to_s, url: url_for(file) } }
     links = @answer.links.map { |link| { name: link.name, url: link.url } }
 
@@ -87,8 +83,10 @@ class AnswersController < ApplicationController
                                           votes: votes,
                                           url: url_for(@answer),
                                           author_id: @answer.user.id
-                                        ) 
+                                        ),
+        sid: session.id.public_id
       }      
     )
   end
+
 end

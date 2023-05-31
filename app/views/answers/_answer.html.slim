@@ -7,8 +7,9 @@ article.card.mt-3 id="answer-#{answer.id}"
       -if answer.files.attached?
         .file-buttons
           -answer.files.each do |file| 
-            span class="d-inline-block text-truncate" style="max-width: 150px;"
-              =link_to file.filename, url_for(file)
+            p
+              span class="d-inline-block text-truncate" style="max-width: 200px;"
+                =link_to file.filename, url_for(file)
             .btn-group
               =button_to "delete file", delete_file_answer_path(answer), method: :patch,
                       params: {answer: {id: answer.id, file: file}}, remote: true, class: "btn btn-outline-danger btn-sm mx-3"
@@ -21,6 +22,8 @@ article.card.mt-3 id="answer-#{answer.id}"
 
     = render "shared/votes", votable: answer
     
+    = render "shared/comments", resource: answer
+
     .answer-action-buttons
       .btn-group
         -if current_user&.author_of?(answer)

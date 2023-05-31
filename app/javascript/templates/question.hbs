@@ -35,29 +35,29 @@
       {{/if}}
 
       {{#if userSignedIn }}
-      <div class="votes"> 
-        Rating: <span id="votes-count-#{question.id}" class="px-2">{{question.votes.votes_sum}}</span>
+        <div class="votes"> 
+          Rating: <span id="votes-count-{{question.id}}" class="px-2">{{question.votes.votes_sum}}</span>
 
-        <a class="like-votable btn btn-link px-2" data-votable-id="{{question.id}}" data-type="json" data-remote="true"
-          rel="nofollow" data-method="patch" href="{{question.votes.like_url}}">
-          <i class="bi bi-hand-thumbs-up"></i>
-        </a>
-        
-        <a class="reset-like-votable btn btn-link px-2 hidden" data-votable-id="{{question.id}}" data-type="json" data-remote="true"
-          rel="nofollow" data-method="patch" href="{{question.votes.reset_url}}">
-          <i class="bi bi-hand-thumbs-up-fill"></i>
-        </a>
+          <a class="like-votable btn btn-link px-2" data-votable-id="{{question.id}}" data-type="json" data-remote="true"
+            rel="nofollow" data-method="patch" href="{{question.votes.like_url}}">
+            <i class="bi bi-hand-thumbs-up"></i>
+          </a>
+          
+          <a class="reset-like-votable btn btn-link px-2 hidden" data-votable-id="{{question.id}}" data-type="json" data-remote="true"
+            rel="nofollow" data-method="patch" href="{{question.votes.reset_url}}">
+            <i class="bi bi-hand-thumbs-up-fill"></i>
+          </a>
 
-        <a class="dislike-votable btn btn-link px-2" data-votable-id="{{question.id}}" data-type="json"
-          data-remote="true" rel="nofollow" data-method="patch" href="{{question.votes.dislike_url}}">
-          <i class="bi bi-hand-thumbs-down"></i>
-        </a>
+          <a class="dislike-votable btn btn-link px-2" data-votable-id="{{question.id}}" data-type="json"
+            data-remote="true" rel="nofollow" data-method="patch" href="{{question.votes.dislike_url}}">
+            <i class="bi bi-hand-thumbs-down"></i>
+          </a>
 
-        <a class="reset-dislike-votable btn btn-link px-2 hidden" data-votable-id="{{question.id}}" data-type="json"
-          data-remote="true" rel="nofollow" data-method="patch" href="{{question.votes.reset_url}}">
-          <i class="bi bi-hand-thumbs-down-fill"></i>
-        </a>
-      </div>
+          <a class="reset-dislike-votable btn btn-link px-2 hidden" data-votable-id="{{question.id}}" data-type="json"
+            data-remote="true" rel="nofollow" data-method="patch" href="{{question.votes.reset_url}}">
+            <i class="bi bi-hand-thumbs-down-fill"></i>
+          </a>
+        </div>
       {{/if}}
 
     </div>

@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
@@ -7,15 +8,19 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all.order(created_at: :asc)
+    gon.push({
+      :sid => session&.id&.public_id 
+    })
+    
   end
 
   def show
     @answer = @question.answers.new
     gon.push({
-      :question_id => @question.id
+      :question_id => @question.id,
+      :sid => session&.id&.public_id 
     })
 
-    logger.info "-==== session public id: #{session.id.public_id} ====-"
   end
 
   def new
@@ -71,10 +76,6 @@ class QuestionsController < ApplicationController
   def publish_question
     return if @question.errors.any?
 
-    gon.push({
-      :current_user_id => current_user.id
-    })
-
     files = @question.files.map { |file| { name: file.filename.to_s, url: url_for(file) } }
     links = @question.links.map { |link| { name: link.name, url: link.url } }
     votes = {
@@ -92,7 +93,8 @@ class QuestionsController < ApplicationController
                                             votes: votes,
                                             reward: @question.reward, 
                                             url: url_for(@question), 
-                                            ) 
+                                            ),
+        sid: session.id.public_id
       }      
     )
   end

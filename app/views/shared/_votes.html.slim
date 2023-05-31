@@ -23,7 +23,7 @@
       - reset_like_class = "btn btn-link hidden"
       - reset_dislike_class = "btn btn-link hidden"
 
-    <div> Rating: 
+    <div> Rating of votable: 
     span id="votes-count-#{votable.id}" class="px-2"
       = votable.votes_sum
     = link_to polymorphic_path(votable, action: :like), remote: true, method: :patch,  
