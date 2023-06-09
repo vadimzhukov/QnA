@@ -71,6 +71,7 @@ module Commented
 
     ActionCable.server.broadcast("comments_channel", {
       comment: {
+        id: @comment.id,
         body: @comment.body,
         author_email: @comment.user.email,
         date: @comment.created_at,

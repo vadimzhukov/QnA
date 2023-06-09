@@ -70,10 +70,10 @@ class AnswersController < ApplicationController
     links = @answer.links.map { |link| { name: link.name, url: link.url } }
 
     votes = {
-            votes_sum: @question.votes_sum,
-            like_url: polymorphic_path(@question, action: :like),
-            dislike_url: polymorphic_path(@question, action: :dislike),
-            reset_url: polymorphic_path(@question, action: :reset_vote)
+            votes_sum: @answer.votes_sum,
+            like_url: polymorphic_path(@answer, action: :like),
+            dislike_url: polymorphic_path(@answer, action: :dislike),
+            reset_url: polymorphic_path(@answer, action: :reset_vote)
             }
 
     ActionCable.server.broadcast(
