@@ -6,6 +6,7 @@ feature "Create question", "
   I can ask a question
 " do
   given(:user) { create(:user) }
+  given(:user2) { create(:user) }
 
   describe "A11d user" do
     background do
@@ -93,4 +94,48 @@ feature "Create question", "
       expect(page).not_to have_link "Add question"
     end
   end
+
+  context "WebSocket broadcast in other session" do
+    scenario "User creates question, another user and guest see it appeared without page refresh", js: true do
+      Capybara.using_session("user") do
+        login(user)
+        visit questions_path
+      end
+
+      Capybara.using_session("user2") do
+        login(user2)
+        visit questions_path
+      end
+
+      Capybara.using_session("guest") do
+        visit questions_path
+      end
+
+      Capybara.using_session("user") do
+        click_on "Ask question"
+
+        fill_in id: "question_title", with: "Test question title"
+
+        fill_in id: "question_body", with: "Test question body"
+        click_on "Ask question"
+
+        expect(page).to have_content "Test question title"
+        expect(page).to have_content "Test question body"
+      end
+
+      Capybara.using_session("user2") do
+        expect(page).to have_content "Test question title"
+        expect(page).to have_content "Test question body"
+        expect(page).to have_content "Rating"
+        expect(page).to have_css "i.bi-hand-thumbs-up"
+        expect(page).to have_css "i.bi-hand-thumbs-down"
+      end
+
+      Capybara.using_session("guest") do
+        expect(page).to have_content "Test question title"
+        expect(page).to have_content "Test question body"
+      end
+    end
+  end
+
 end

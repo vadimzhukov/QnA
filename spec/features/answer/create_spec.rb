@@ -6,6 +6,7 @@ feature "create answer on question page", "
   I can create answer on question page
 " do
   given!(:user) { create(:user) }
+  given!(:user2) { create(:user) }
   given!(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 3, question:) }
 
@@ -28,7 +29,7 @@ feature "create answer on question page", "
         answers.each { |a| expect(page).to have_content a.body }
       end
 
-      within ".answers-list" do
+      within "#answer-#{answers[2].id+1}" do
         expect(page).to have_content "Test answer body"
       end
     end
@@ -100,6 +101,56 @@ feature "create answer on question page", "
 
       expect(page).not_to have_content "New answer"
       expect(page).not_to have_button "Submit answer"
+    end
+  end
+
+  context "WebSocket broadcast in other session" do
+    scenario "User creates answer, another user and guest see it appeared without page refresh", js: true do
+      Capybara.using_session("user") do
+        login(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session("user2") do
+        login(user2)
+        visit question_path(question)
+      end
+
+      Capybara.using_session("guest") do
+        visit question_path(question)
+      end
+
+      Capybara.using_session("user") do
+        within ".new-answer" do
+          fill_in "answer_body", with: "Test answer body"
+          click_on "Submit answer"
+        end
+  
+        expect(page).to have_content question.title
+        expect(page).to have_content question.body
+  
+        within ".answers-list" do
+          answers.each { |a| expect(page).to have_content a.body }
+        end
+  
+        within "#answer-#{answers[2].id+1}" do
+          expect(page).to have_content "Test answer body"
+        end
+      end
+
+      Capybara.using_session("user2") do
+        within "#answer-#{answers[2].id+1}" do
+          expect(page).to have_content "Test answer body"
+          find('i.bi-hand-thumbs-up')
+          find('i.bi-hand-thumbs-down')
+        end
+      end
+
+      Capybara.using_session("guest") do
+        within "#answer-#{answers[2].id+1}" do
+          expect(page).to have_content "Test answer body"
+        end
+      end
     end
   end
 end

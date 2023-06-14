@@ -8,27 +8,31 @@
       h3 =question.body 
 
       -if question.links.any?
-        h3 Links of question:
+        h6 Links:
         -question.links.each do |link|
           p.mt-3
             =render "shared/link_with_gist_preview", link: link
       
       -if question.files.attached?
+        h6 Files:
         -question.files.each do |file|
-          span class="d-inline-block text-truncate" style="max-width: 150px;"
-            =link_to file.filename, url_for(file) 
-          .btn-group
-            =button_to "Delete file", delete_file_question_path(question), method: :patch, 
-                        params: {question: {id: question.id, file: file}}, remote: true,
-                        class: "btn btn-outline-danger btn-sm mx-3"
+          p
+            span class="d-inline-block text-truncate" style="max-width: 200px;"
+              =link_to file.filename, url_for(file) 
+          -if current_user&.author_of?(question)
+            .btn-group
+              =button_to "Delete file", delete_file_question_path(question), method: :patch, 
+                          params: {question: {id: question.id, file: file}}, remote: true,
+                          class: "btn btn-outline-danger btn-sm mx-3"
       
       -if question.reward.present?
-        h3 Reward of question:
+        h6 Reward of question:
         p.mt-3
           =render "questions/reward", reward: question.reward
 
       = render "shared/votes", votable: question
         
+      = render "shared/comments", resource: question
 
     =form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" } do |f|
       .form-group
@@ -51,7 +55,6 @@
               = render "reward_fields", reward: reward
             
       =f.submit "Save question", class: "btn btn-success"
-
 
     - if current_user&.author_of?(question)
       .btn-group

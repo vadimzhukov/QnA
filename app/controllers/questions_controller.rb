@@ -1,15 +1,26 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
+  after_action :publish_question, only: [:create]
 
   def index
     @questions = Question.all.order(created_at: :asc)
+    gon.push({
+      :sid => session&.id&.public_id 
+    })
+    
   end
 
   def show
     @answer = @question.answers.new
+    gon.push({
+      :question_id => @question.id,
+      :sid => session&.id&.public_id 
+    })
+
   end
 
   def new
@@ -60,5 +71,31 @@ class QuestionsController < ApplicationController
 
   def add_files
     @question.files.attach(params[:question][:files]) if params[:question][:files].present?
+  end
+
+  def publish_question
+    return if @question.errors.any?
+
+    files = @question.files.map { |file| { name: file.filename.to_s, url: url_for(file) } }
+    links = @question.links.map { |link| { name: link.name, url: link.url } }
+    votes = {
+            votes_sum: @question.votes_sum,
+            like_url: polymorphic_path(@question, action: :like),
+            dislike_url: polymorphic_path(@question, action: :dislike),
+            reset_url: polymorphic_path(@question, action: :reset_vote)
+            }
+
+
+    ActionCable.server.broadcast(
+      "questions_channel", 
+      { question: @question.attributes.merge(files: files, 
+                                            links: links, 
+                                            votes: votes,
+                                            reward: @question.reward, 
+                                            url: url_for(@question), 
+                                            ),
+        sid: session.id.public_id
+      }      
+    )
   end
 end

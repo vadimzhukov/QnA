@@ -13,8 +13,9 @@ article.card
     -if @question.files.attached?
       h6.mt-3 Files of question:
       -@question.files.each do |file| 
-        span class="text-truncate" style="max-width: 100px;"
-          =link_to file.filename, url_for(file)
+        p
+          span class="d-inline-block text-truncate" style="max-width: 200px;"
+            =link_to file.filename, url_for(file)
 
     -if @question.links.any?
       h6.mt-3 Links of question:

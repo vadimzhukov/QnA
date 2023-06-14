@@ -9,6 +9,8 @@
     "@rails/webpacker": "5.4.4",
     "bootstrap": "^5.2.3",
     "gist-client": "^1.1.1",
+    "handlebars": "^4.7.7",
+    "handlebars-loader": "^1.7.3",
     "jquery": "^3.6.3",
     "turbolinks": "^5.2.0",
     "webpack": "^4.46.0",

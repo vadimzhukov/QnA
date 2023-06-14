@@ -28,5 +28,7 @@ module Qna
     end
 
     config.action_view.form_with_generates_remote_forms = true
+
+    config.action_cable.disable_request_forgery_protection = false
   end
 end

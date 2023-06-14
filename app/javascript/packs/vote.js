@@ -1,5 +1,7 @@
-$(document).on("turbolinks:load", function() {
+
+export function renderLikes() {
   $(".votes").on("ajax:success", function(e) {
+    console.log("--- vote.js ----")
     const votableId = e.detail[0].id
     const votesSum = e.detail[0].votes_sum
   
@@ -24,4 +26,9 @@ $(document).on("turbolinks:load", function() {
       $(".reset-dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
     }
   })
+}
+
+$(document).on("turbolinks:load", function() {
+  renderLikes()
 })
+

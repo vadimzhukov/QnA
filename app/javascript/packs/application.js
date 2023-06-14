@@ -18,5 +18,3 @@ window.$ = $;
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
-
-
