@@ -34,4 +34,26 @@ RSpec.describe User, type: :model do
       expect { author_of_answer.reward_user(question.reward) }.to change(author_of_answer.rewards, :count).by(1)
     end
   end
+
+  describe ".find_for_oauth" do
+    let!(:user) { create(:user) }
+    
+
+    context "user exists" do
+      context "identity exists" do
+        let(:identity) { create(:identity, user: user) }
+        let(:auth) { OmniAuth::AuthHash.new(provider: 'gihub', uid: '123', info: { email: 'user@a.com' }) }
+
+        it 'find identity' do
+          user.identities.create(provider: auth.provider, uid: auth.uid)
+          expect(User.find_for_oauth(auth)).to eq user
+        end
+
+        it "creates identity" do 
+          
+        end
+      end
+    end
+
+  end
 end
