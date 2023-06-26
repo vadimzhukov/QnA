@@ -37,38 +37,13 @@ RSpec.describe User, type: :model do
 
   describe ".find_for_oauth" do
     let!(:user) { create(:user) }
-    let!(:auth) { OmniAuth::AuthHash.new(provider: 'gihub', uid: '123', info: { email: user.email }) }
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'gihub', uid: '123')}
+    let(:service) { double('User::FindForOauth') }
 
-    context "user exists" do
-      it "does not create new user" do
-        expect { User.find_for_oauth(auth) }.not_to change(User, :count)
-      end
-
-
-      it "creates identity" do 
-        expect { User.find_for_oauth(auth) }.to change(Identity, :count).by(1)
-      end
-      it "creates identity with correct provider and uid" do
-        user = User.find_for_oauth(auth)
-        identity = user.identities.first
-        expect(identity.provider).to eq auth.provider
-        expect(identity.uid).to eq auth.uid
-      end
-    end
-
-    context "user does not exist" do
-      let(:auth) { OmniAuth::AuthHash.new(provider: 'gihub', uid: '123', info: { email: 'sample@email.com' }) }
-      it "creates user" do
-        
-        expect { User.find_for_oauth(auth) }.to change(User, :count).by(1)
-      end
-
-      it "creates identity with provider and uid for user" do
-        user = User.find_for_oauth(auth)
-        identity = user.identities.first
-        expect(identity.provider).to eq auth.provider
-        expect(identity.uid).to eq auth.uid
-      end
+    it "calls User::FindForOauth.new(auth)" do
+      expect(User::FindForOauth).to receive(:new).with(auth).and_return(service)
+      expect(service).to receive(:call)
+      User.find_for_oauth(auth)
     end
 
   end
