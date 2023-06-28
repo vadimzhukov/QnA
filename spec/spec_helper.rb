@@ -13,6 +13,10 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require_relative "support/omniauth_macros"
+require "omniauth"
+
 RSpec.configure do |config|
   # RSpec 3:
   config.backtrace_exclusion_patterns = [
@@ -22,6 +26,8 @@ RSpec.configure do |config|
     /spec\/spec_helper\.rb/,
     /lib\/rspec\/(core|expectations|matchers|mocks)/
   ]
+
+  config.include(OmniauthMacros)
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -103,3 +109,5 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+OmniAuth.config.test_mode = true

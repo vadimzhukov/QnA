@@ -27,3 +27,23 @@ feature "user signs in with Email and password", "
     expect(page).to have_content "Invalid Email or password"
   end
 end
+
+feature "user signs in with Github" do
+
+  it "can sign in with github account" do
+    visit new_user_session_path
+    page.should have_content("Sign in with GitHub")
+    mock_auth_hash
+    click_link "Sign in with GitHub"
+    page.should have_content("Successfully authenticated from github account.")
+  end
+
+  it "can handle authentication error" do
+    OmniAuth.config.mock_auth[:github] = :invalid_credentials
+    visit new_user_session_path
+    page.should have_content("Sign in with GitHub")
+    click_link "Sign in with GitHub"
+    page.should have_content('Could not authenticate you from GitHub because "Invalid credentials"')
+  end
+
+end
