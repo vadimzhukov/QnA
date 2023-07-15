@@ -1,0 +1,10 @@
+<h2>Email registration</h2>
+
+<%= form_with(model: @email_registration) do |f| %>
+  <%= f.label :email %>
+  <%= f.email_field :email, autofocus: true %>
+  <%= f.hidden_field :oauth_provider %>
+  <%= f.hidden_field :oauth_uid %>
+  
+  <%= f.submit "Register" %>
+<% end %>

@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github]
+         :omniauthable, omniauth_providers: [:github, :twitter]
 
   def reward_user(reward)
     rewards << reward if reward&.persisted?
@@ -21,6 +21,11 @@ class User < ApplicationRecord
 
   def self.find_for_oauth(auth)
    User::FindForOauth.new(auth).call
+  end
+
+  def self.create_by_email(email)
+    password = Devise.friendly_token[0, 10]
+    user = User.create!(email: email, password: password)
   end
 
 end

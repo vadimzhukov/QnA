@@ -38,8 +38,11 @@ gem 'popper'
 gem 'hirb'
 gem 'gon'
 gem 'omniauth'
-gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-github'
+gem 'omniauth-twitter'
+gem 'rubygems-server'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -48,6 +51,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "shoulda-matchers"
   gem "rails-controller-testing"
+  gem 'letter_opener'
 end
 
 group :development do

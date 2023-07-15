@@ -8,15 +8,16 @@ class User::FindForOauth
   def call
     identity = Identity.where(provider: auth.provider, uid: auth.uid).first
     return identity.user if identity
-
+ 
     user = User.where(email: auth.info[:email]).first
-    unless user
+
+    if !user && auth.info[:email].present?
       password = Devise.friendly_token[0, 10]
       user = User.create!(email: auth[:info][:email], password: password)
+      identity = user.identities.create(provider: auth.provider, uid: auth.uid)
     end
 
-    identity = user.identities.create(provider: auth.provider, uid: auth.uid)
-    
     user
   end
+
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_26_133234) do
+ActiveRecord::Schema.define(version: 2023_06_30_142332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,18 @@ ActiveRecord::Schema.define(version: 2023_06_26_133234) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "email_registrations", force: :cascade do |t|
+    t.string "email"
+    t.string "oauth_provider"
+    t.string "oauth_uid"
+    t.boolean "confirmed", default: false, null: false
+    t.string "confirmation_token", null: false
+    t.datetime "confirmed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_email_registrations_on_email", unique: true
   end
 
   create_table "identities", force: :cascade do |t|
