@@ -12,7 +12,7 @@ RSpec.describe User::FindForOauth do
     end
   end
 
-  context "user is existed identity is not existed" do
+  context "user is existed, identity is not existed" do
     let(:auth) { OmniAuth::AuthHash.new(provider: 'gihub', uid: '123', info: { email: user.email }) }
     it "does not create new user" do
       expect { subject.call }.not_to change(User, :count)
@@ -21,6 +21,7 @@ RSpec.describe User::FindForOauth do
     it "creates identity" do 
       expect { subject.call }.to change(Identity, :count).by(1)
     end
+    
     it "creates identity with correct provider and uid" do
       user = subject.call
       identity = user.identities.first

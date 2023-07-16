@@ -4,7 +4,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
   before { @request.env["devise.mapping"] = Devise.mappings[:user] }
 
   describe 'Github' do
-    let(:oauth_data) { { 'provider' => 'github', 'uid' => '123' } }
+    let(:oauth_data) { { provider: 'github', uid: '123' } }
     
     it 'find user with oauth data' do
       allow(request.env).to receive(:[]).and_call_original
@@ -31,6 +31,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
 
     context 'user does not exist' do
       before do
+        allow(request.env).to receive(:[]).and_call_original
+        allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
         allow(User).to receive(:find_for_oauth)
         get :github
       end
@@ -40,7 +42,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
       end
 
       it 'redirect user to login page' do
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(new_email_registration_path)
       end
     end
 

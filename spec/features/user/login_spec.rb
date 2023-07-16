@@ -28,22 +28,48 @@ feature "user signs in with Email and password", "
   end
 end
 
-feature "user signs in with Github" do
+feature "user signs in with OAuth" do
 
-  it "can sign in with github account" do
-    visit new_user_session_path
-    page.should have_content("Sign in with GitHub")
-    mock_auth_hash
-    click_link "Sign in with GitHub"
-    page.should have_content("Successfully authenticated from github account.")
+  context "GitHub" do
+    it "can sign in with github account" do
+      visit new_user_session_path
+      page.should have_content("Sign in with GitHub")
+      mock_auth_hash_with_email("github")
+      click_link "Sign in with GitHub"
+      page.should have_content("Successfully authenticated from github account.")
+    end
+
+    it "can handle authentication error" do
+      OmniAuth.config.mock_auth[:github] = :invalid_credentials
+      visit new_user_session_path
+      page.should have_content("Sign in with GitHub")
+      click_link "Sign in with GitHub"
+      page.should have_content('Could not authenticate you from GitHub because "Invalid credentials"')
+    end
   end
 
-  it "can handle authentication error" do
-    OmniAuth.config.mock_auth[:github] = :invalid_credentials
-    visit new_user_session_path
-    page.should have_content("Sign in with GitHub")
-    click_link "Sign in with GitHub"
-    page.should have_content('Could not authenticate you from GitHub because "Invalid credentials"')
-  end
+  context "Twitter" do
+    it "can sign in with twitter account" do
+      visit new_user_session_path
+      page.should have_content("Sign in with GitHub")
+      mock_auth_hash_without_email("twitter")
+      click_link "Sign in with Twitter"
+      
+      page.should have_content("Email registration")
+      fill_in "Email", with: "unique@qna.com"
+      click_button "Register"
 
+      message = ActionMailer::Base.deliveries.last
+      message_page = Capybara.string(message.body.to_s)
+      message_page.should have_content("Please follow the \n  link \nto confirm your email")
+      url = message_page.find(:link, "link")[:href]
+      visit url
+
+      page.should have_content("Your account was successfully created, please login")
+      click_link "Sign in with Twitter"
+
+      page.should have_content("Successfully authenticated from twitter account.")
+    end
+  
+  end
 end

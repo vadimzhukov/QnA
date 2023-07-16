@@ -1,8 +1,7 @@
 <h3> Confirm your email for user registration </h3>
 
 <p> Please follow the 
-  <%= link_to "link", url_for(method: :patch,
-                              host: 'qna.com',
+  <%= link_to "link", url_for(host: 'qna.com',
                               controller: 'email_registrations',
                               action: 'confirm',
                               id: @email_registration.id,
