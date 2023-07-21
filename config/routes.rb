@@ -20,7 +20,12 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+
+  resources :email_registrations do
+    get :confirm, on: :member
+  end
+
   root to: "questions#index"
   resources :questions, concerns: [:votable, :file_deletable, :commentable] do
     resources :answers, shallow: true, only: %i[new create edit update destroy],

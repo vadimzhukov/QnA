@@ -1,0 +1,11 @@
+<h3> Confirm your email for user registration </h3>
+
+<p> Please follow the 
+  <%= link_to "link", url_for(host: 'qna.com',
+                              controller: 'email_registrations',
+                              action: 'confirm',
+                              id: @email_registration.id,
+                              confirmation_token: @confirmation_token,
+                              email: @email_registration.email)
+  %> 
+to confirm your email </p>

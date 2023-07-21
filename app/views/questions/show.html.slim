@@ -1,5 +1,7 @@
 =render "shared/errors", resource: @question
 
+gon.push { question_id: @question.id }
+
 article.card
   .card-body
     h5.text-center Question ##{@question.id}
