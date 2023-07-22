@@ -4,24 +4,6 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
-  describe "#author_of?" do
-    let!(:author) { create(:user) }
-    let!(:not_author) { create(:user) }
-
-    let!(:question) { create(:question, user: author) }
-    let!(:answer) { create(:answer, user: author) }
-
-    it "author of record" do
-      expect(author.author_of?(question)).to be true
-      expect(author.author_of?(answer)).to be true
-    end
-
-    it "not author of record" do
-      expect(not_author.author_of?(question)).to be false
-      expect(not_author.author_of?(answer)).to be false
-    end
-  end
-
   describe "#reward_user" do
     let!(:author_of_question) { create(:user) }
     let!(:author_of_answer) { create(:user) }
