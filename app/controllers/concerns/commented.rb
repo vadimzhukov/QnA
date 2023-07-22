@@ -4,6 +4,7 @@ module Commented
   included do
     before_action :set_commented, only: [:add_comment, :destroy]
     after_action :publish_comment, only: [:add_comment]
+    load_and_authorize_resource
   end
 
   def add_comment

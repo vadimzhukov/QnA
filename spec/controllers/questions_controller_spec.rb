@@ -47,6 +47,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
+    let(:question) { create(:question, user: user) }
     before { get :edit, params: { id: question } }
 
     it 'assigns the requested question to @question' do
@@ -58,6 +59,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:question) { create(:question, user: user) }
     context 'with valid attributes' do
       it 'saves question to database' do
         expect do
@@ -80,6 +82,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    let(:question) { create(:question, user: user) }
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
         patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
@@ -105,7 +108,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) { create(:question) }
+    let!(:question) { create(:question, user: user) }
     it 'assigns question to @question' do
       delete :destroy, params: { id: question }
       expect(assigns(:question)).to eq question

@@ -19,7 +19,7 @@
           p
             span class="d-inline-block text-truncate" style="max-width: 200px;"
               =link_to file.filename, url_for(file) 
-          -if current_user&.author_of?(question)
+          -if can?(:delete_file, question)
             .btn-group
               =button_to "Delete file", delete_file_question_path(question), method: :patch, 
                           params: {question: {id: question.id, file: file}}, remote: true,
@@ -29,6 +29,12 @@
         h6 Reward of question:
         p.mt-3
           =render "questions/reward", reward: question.reward
+
+      .btn-group
+        -if can?(:edit, question)
+          =link_to "Edit question", "#", class: "edit-question-link btn btn-light m-1", data: { question_id: question.id }
+        -if can?(:destroy, question)  
+          =button_to "Delete question", question_path(question), method: :delete, class: "btn btn-danger mt-1", id: "delete-question-#{question.id}"
 
       = render "shared/votes", votable: question
         
@@ -53,10 +59,6 @@
           #reward
             = f.fields_for :reward do |reward|
               = render "reward_fields", reward: reward
-            
       =f.submit "Save question", class: "btn btn-success"
 
-    - if current_user&.author_of?(question)
-      .btn-group
-        =link_to "Edit question", "#", class: "edit-question-link btn btn-light m-1", data: { question_id: question.id }
-        =button_to "Delete question", question_path(question), method: :delete, class: "btn btn-danger mt-1", id: "delete-question-#{question.id}"
+    

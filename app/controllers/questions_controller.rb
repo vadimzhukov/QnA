@@ -6,12 +6,13 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
   after_action :publish_question, only: [:create]
 
+  load_and_authorize_resource
+
   def index
     @questions = Question.all.order(created_at: :asc)
     gon.push({
       :sid => session&.id&.public_id 
     })
-    
   end
 
   def show

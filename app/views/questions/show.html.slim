@@ -38,7 +38,8 @@ article.card
     .answer-errors
       = render 'shared/errors', resource: @answer
 
-    -if user_signed_in?
+    / -if user_signed_in?
+    -if can? :create, Answer
       .card.mt-3 style="background-color: #e9ecef;"
         .card-body.mx-3
           h3.mt-3.text-center Submit your answer

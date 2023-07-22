@@ -76,6 +76,7 @@ GEM
     cairo-gobject (4.1.8)
       cairo (>= 1.16.2)
       glib2 (= 4.1.8)
+    cancancan (3.5.0)
     capybara (3.39.2)
       addressable
       matrix
@@ -419,6 +420,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
+  cancancan
   capybara
   cocoon
   devise
