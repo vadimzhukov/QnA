@@ -45,4 +45,4 @@ yarn-debug.log*
 
 .rubocop.yml
 
-/spec/examples
+/spec/examples.txt
