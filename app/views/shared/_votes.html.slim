@@ -2,22 +2,22 @@
 
   / этот код просто ужасен :( как его можно красиво исправить?
   .votes
-    - if current_user&.author_of?(votable)
+    -if cannot?(:like, votable) && cannot?(:dislike, votable) && cannot?(:reset_vote, votable)
       - like_class = "hidden"
       - dislike_class = "hidden"
       - reset_like_class = "hidden"
       - reset_dislike_class = "hidden"
-    - elsif votable.user_liked?(current_user)
+    -elsif can?(:reset_vote, votable) && votable.user_liked?(current_user)
       - like_class = "btn btn-link disable hidden"
       - dislike_class = "btn btn-link hidden"
       - reset_like_class = "btn btn-link"
       - reset_dislike_class = "btn btn-link hidden"
-    - elsif votable.user_disliked?(current_user)
+    - elsif can?(:reset_vote, votable) && votable.user_disliked?(current_user)
       - like_class = "btn btn-link hidden"
       - dislike_class = "btn btn-link hidden"
       - reset_like_class = "btn btn-link hidden"
       - reset_dislike_class = "btn btn-link"
-    - else 
+    - elsif can?(:like, votable) || can?(:dislike, votable)
       - like_class = "btn btn-link"
       - dislike_class = "btn btn-link"
       - reset_like_class = "btn btn-link hidden"

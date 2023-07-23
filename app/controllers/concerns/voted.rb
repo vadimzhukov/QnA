@@ -3,6 +3,8 @@ module Voted
 
   included do
     before_action :set_votable, only: [:like, :dislike, :reset_vote]
+
+    load_and_authorize_resource
   end
 
   def like

@@ -42,6 +42,7 @@ gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 gem 'rubygems-server'
+gem 'cancancan'
 
 
 group :development, :test do

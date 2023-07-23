@@ -1,0 +1,25 @@
+<h1> Users </h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">email</th>
+      <th scope="col">Admin?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.email %></td>
+        <td>
+          <%=form_with model: user do |f| %>
+            <%= f.select :admin, options_for_select([ true, false ], user.admin), class: "form-select" %>
+            <%= f.submit "Save user", class: "btn btn-primary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

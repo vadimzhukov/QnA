@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: "questions#index"
+
   concern :votable do
     member do
       patch :like
@@ -26,7 +28,8 @@ Rails.application.routes.draw do
     get :confirm, on: :member
   end
 
-  root to: "questions#index"
+  resources :users
+
   resources :questions, concerns: [:votable, :file_deletable, :commentable] do
     resources :answers, shallow: true, only: %i[new create edit update destroy],
                         concerns: [:votable, :file_deletable, :commentable] do

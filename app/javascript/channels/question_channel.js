@@ -5,6 +5,7 @@ import {renderLikes} from "../packs/vote.js"
 const templateAnswer = require("../templates/answer.hbs")
 
 $(document).on("turbolinks:load", function() {
+  
   const question_id = gon.question_id
   
   if (question_id) {

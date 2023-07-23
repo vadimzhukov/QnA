@@ -15,10 +15,6 @@ class User < ApplicationRecord
     rewards << reward if reward&.persisted?
   end
 
-  def author_of?(record)
-    record.respond_to?(:user) && id == record.user_id
-  end
-
   def self.find_for_oauth(auth)
    User::FindForOauth.new(auth).call
   end

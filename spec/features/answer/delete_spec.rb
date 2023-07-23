@@ -7,7 +7,7 @@ I can delete my answer
 " do
   given!(:user1) { create(:user) }
   given!(:question) { create(:question, user: user1) }
-  given!(:answers1) { create_list(:answer, 5, user: user1, question:) }
+  given!(:answers1) { create_list(:answer, 5, user: user1, question: question) }
 
   scenario "A11d user deletes his answer", js: true do
     login(user1)
