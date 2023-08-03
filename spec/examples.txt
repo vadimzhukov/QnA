@@ -1,5 +1,18 @@
 example_id                                                         | status  | run_time        |
 ------------------------------------------------------------------ | ------- | --------------- |
+./spec/api/v1/profiles_spec.rb[1:1:1:1:1]                          | failed  | 0.01198 seconds |
+./spec/api/v1/profiles_spec.rb[1:1:1:1:2]                          | failed  | 0.00066 seconds |
+./spec/api/v1/profiles_spec.rb[1:1:2:1]                            | passed  | 0.09812 seconds |
+./spec/api/v1/profiles_spec.rb[1:1:2:2]                            | passed  | 0.01498 seconds |
+./spec/api/v1/profiles_spec.rb[1:1:2:3]                            | passed  | 0.01374 seconds |
+./spec/api/v1/questions_spec.rb[1:1:1:1:1]                         | failed  | 0.00081 seconds |
+./spec/api/v1/questions_spec.rb[1:1:1:1:2]                         | failed  | 0.0007 seconds  |
+./spec/api/v1/questions_spec.rb[1:1:2:1]                           | failed  | 0.05638 seconds |
+./spec/api/v1/questions_spec.rb[1:1:2:2]                           | failed  | 0.02253 seconds |
+./spec/api/v1/questions_spec.rb[1:1:2:3]                           | failed  | 0.0283 seconds  |
+./spec/api/v1/questions_spec.rb[1:1:2:4]                           | failed  | 0.02769 seconds |
+./spec/api/v1/questions_spec.rb[1:1:2:5:1]                         | failed  | 0.02625 seconds |
+./spec/api/v1/questions_spec.rb[1:1:2:5:2]                         | failed  | 0.02507 seconds |
 ./spec/channels/question_channel_spec.rb[1:1]                      | pending | 0.00001 seconds |
 ./spec/channels/questions_channel_spec.rb[1:1]                     | pending | 0 seconds       |
 ./spec/controllers/answers_controller_spec.rb[1:1:1]               | passed  | 0.07172 seconds |

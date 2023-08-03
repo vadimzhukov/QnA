@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   root to: "questions#index"
 
   concern :votable do
@@ -39,4 +40,13 @@ Rails.application.routes.draw do
   resources :rewards, only: %i[index]
 
   mount ActionCable.server => "/cable"
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+      end
+      resources :questions, only: [:index]
+    end
+  end
 end

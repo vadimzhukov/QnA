@@ -40,8 +40,8 @@ RSpec.configure do |config|
 
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
-
   config.include ActionCable::TestHelper
+  config.include ApiHelpers, type: :request
 
   # Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.register_driver :chrome do |app|

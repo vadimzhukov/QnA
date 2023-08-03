@@ -24,4 +24,8 @@ class User < ApplicationRecord
     user = User.create!(email: email, password: password)
   end
 
+  def admin?
+   self.admin
+  end
+
 end
