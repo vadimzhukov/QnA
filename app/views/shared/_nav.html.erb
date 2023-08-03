@@ -10,6 +10,11 @@
           <%= link_to "Users", users_path, class: "nav-link" %>
         </li>
       <% end %>
+      <% if can?(:read, :oauth_applications) %>
+        <li class="nav-item h-100">
+          <%= link_to "OAuth applications", oauth_applications_path, class: "nav-link" %>
+        </li>
+      <% end %>
     <% end %>
   </ul>
   <ul class="navbar-nav ms-auto d-lg-flex align-items-center">

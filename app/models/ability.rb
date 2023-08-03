@@ -28,6 +28,8 @@ class Ability
       question = answer.question
       question.user_id == user.id 
     end
+    can :read, :oauth_applications
+    can :read, :self_profile
   end
 
   def admin_permissions(user)
