@@ -5,16 +5,8 @@ module Votable
     has_many :votes, dependent: :destroy, as: :votable
   end
 
-  def voted_by_user?(user)
-    votes.where(user:).any?
-  end
-
-  def user_liked?(user)
-    votes.where(user:, direction: true).any? || false
-  end
-
-  def user_disliked?(user)
-    votes.where(user:, direction: false).any? || false
+  def votes_sum_by_user(user)
+    votes.where(user:).reduce(0) { |sum, val| val.direction.present? ? sum += 1 : sum -= 1 } || 0
   end
 
   def votes_sum
