@@ -7,12 +7,12 @@ export function renderLikes() {
   
     // этот код тоже похоже не оптимален :( как его можно улучшить?
     $("#votes-count-" + votableId).html("<span>" + votesSum + "</span>");
-    if (votesSumByUser == "1") {
+    if (votesSumByUser === 1) {
       $(".like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".reset-like-votable[data-votable-id='" + votableId + "']").removeClass("hidden")
       $(".reset-dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
-    } else if (votesSumByUser == "-1") {
+    } else if (votesSumByUser === -1) {
       $(".like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".reset-like-votable[data-votable-id='" + votableId + "']").addClass("hidden")

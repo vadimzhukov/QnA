@@ -46,6 +46,7 @@ gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'oj'
+gem 'reek'
 
 
 group :development, :test do

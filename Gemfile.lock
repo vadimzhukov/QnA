@@ -151,6 +151,7 @@ GEM
     json (2.6.3)
     jsonapi-renderer (0.2.2)
     jwt (2.7.1)
+    kwalify (0.7.2)
     language_server-protocol (3.17.0.3)
     launchy (2.5.2)
       addressable (~> 2.8)
@@ -301,6 +302,10 @@ GEM
       ffi (~> 1.0)
     red-colors (0.3.0)
       matrix
+    reek (6.1.4)
+      kwalify (~> 0.7.0)
+      parser (~> 3.2.0)
+      rainbow (>= 2.0, < 4.0)
     regexp_parser (2.8.1)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -456,6 +461,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.7, >= 6.1.7.2)
   rails-controller-testing
+  reek
   rspec-rails (~> 6.0.0)
   rubocop
   rubygems-server

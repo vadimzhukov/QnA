@@ -1,5 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
   before_action :load_question, only: [:show, :update, :destroy]
+  after_action :publish_question, only: [:create]
 
   authorize_resource
   
@@ -48,5 +49,24 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   def question_params
     params.permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy],
                                                     reward_attributes: [:id, :name, :image, :_destroy])
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    
+    votes = {
+      votes_sum: @question.votes_sum,
+      like_url: polymorphic_path(@question, action: :like),
+      dislike_url: polymorphic_path(@question, action: :dislike),
+      reset_url: polymorphic_path(@question, action: :reset_vote)
+      }
+
+    ActionCable.server.broadcast(
+      "questions_channel", 
+      { question: @question.attributes.merge.merge(votes: votes,
+                                                  url: url_for(@question) 
+                                                  )
+      }      
+    )
   end
 end
