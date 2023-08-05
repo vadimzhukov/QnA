@@ -8,14 +8,14 @@ module Voted
   end
 
   def like
-    return if @votable.voted_by_user?(current_user)
+    return unless @votable.votes_sum_by_user(current_user) == 0
 
     vote = @votable.votes.new(user: current_user, direction: true)
     respond_to do |format|
       if vote.save
         format.json do
           render json: { id: @votable.id, votes_sum: @votable.votes_sum,
-                         current_user_voted: true, vote_direction: true }
+            votes_sum_by_user: 1 }
         end
       else
         format.json { render json: @votable.errors.full_messages, status: :unprocessible_entity }
@@ -24,14 +24,14 @@ module Voted
   end
 
   def dislike
-    return if @votable.voted_by_user?(current_user)
+    return unless @votable.votes_sum_by_user(current_user) == 0
 
     vote = @votable.votes.new(user: current_user, direction: false)
     respond_to do |format|
       if vote.save
         format.json do
-          render json: { id: @votable.id, votes_sum: @votable.votes_sum, current_user_voted: true,
-                         vote_direction: false }
+          render json: { id: @votable.id, votes_sum: @votable.votes_sum, votes_sum_by_user: -1,
+                          }
         end
       else
         format.json { render json: @votable.errors.full_messages, status: :unprocessible_entity }
@@ -40,14 +40,13 @@ module Voted
   end
 
   def reset_vote
-    return unless @votable.voted_by_user?(current_user)
+    return if @votable.votes_sum_by_user(current_user) == 0
 
     vote = @votable.votes.find_by(user: current_user)
     respond_to do |format|
       if vote.destroy
         format.json do
-          render json: { id: @votable.id, votes_sum: @votable.votes_sum, current_user_voted: false,
-                         vote_direction: nil }
+          render json: { id: @votable.id, votes_sum: @votable.votes_sum, votes_sum_by_user: 0 }
         end
       else
         format.json { render json: @votable.errors.full_messages, status: :unprocessible_entity }

@@ -17,10 +17,10 @@ shared_examples_for 'voted' do
         expect(votable.votes_sum).to eq(1)
       end
 
-      it 'returns JSON with the votable ID, votes sum, current user voted true, vote direction true' do
+      it 'returns JSON with the votable ID, votes sum, votes sum by current user 1' do
         patch :like, params: { id: votable.id, format: :json }
-        expect(response.body).to eq({ id: votable.id, votes_sum: 1, current_user_voted: true,
-                                      vote_direction: true }.to_json)
+        expect(response.body).to eq({ id: votable.id, votes_sum: 1, votes_sum_by_user: 1
+                                      }.to_json)
       end
     end
 
@@ -48,10 +48,9 @@ shared_examples_for 'voted' do
         expect(votable.votes_sum).to eq(-1)
       end
 
-      it 'returns JSON with the votable ID, votes sum, current user voted true, vote direction false' do
+      it 'returns JSON with the votable ID, votes sum, votes sum by current user -1' do
         patch :dislike, params: { id: votable.id, format: :json }
-        expect(response.body).to eq({ id: votable.id, votes_sum: -1, current_user_voted: true,
-                                      vote_direction: false }.to_json)
+        expect(response.body).to eq({ id: votable.id, votes_sum: -1, votes_sum_by_user: -1 }.to_json)
       end
     end
 
@@ -91,10 +90,9 @@ shared_examples_for 'voted' do
         expect(votable.votes_sum).to eq(0)
       end
 
-      it 'return JSON with the votable ID, votes sum, current user voted false, vote direction nil' do
+      it 'return JSON with the votable ID, votes sum, votes sum by current user 0' do
         patch :reset_vote, params: { id: votable.id, format: :json }
-        expect(response.body).to eq({ id: votable.id, votes_sum: 0, current_user_voted: false,
-                                      vote_direction: nil }.to_json)
+        expect(response.body).to eq({ id: votable.id, votes_sum: 0, votes_sum_by_user: 0 }.to_json)
       end
     end
   end

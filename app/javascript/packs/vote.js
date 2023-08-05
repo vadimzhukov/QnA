@@ -1,20 +1,18 @@
 
 export function renderLikes() {
   $(".votes").on("ajax:success", function(e) {
-    console.log("--- vote.js ----")
     const votableId = e.detail[0].id
+    const votesSumByUser = e.detail[0].votes_sum_by_user
     const votesSum = e.detail[0].votes_sum
   
-    const vote_direction = e.detail[0].vote_direction
-
     // этот код тоже похоже не оптимален :( как его можно улучшить?
     $("#votes-count-" + votableId).html("<span>" + votesSum + "</span>");
-    if (vote_direction === true) {
+    if (votesSumByUser == "1") {
       $(".like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".reset-like-votable[data-votable-id='" + votableId + "']").removeClass("hidden")
       $(".reset-dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
-    } else if (vote_direction === false) {
+    } else if (votesSumByUser == "-1") {
       $(".like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".dislike-votable[data-votable-id='" + votableId + "']").addClass("hidden")
       $(".reset-like-votable[data-votable-id='" + votableId + "']").addClass("hidden")
