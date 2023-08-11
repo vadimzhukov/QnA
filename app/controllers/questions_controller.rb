@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @questions = Question.all.order(created_at: :asc)
+    @questions = Question.all.order(created_at: :asc).preload(:comments).preload(:votes).preload(:links).preload(:reward)
     gon.push({
       :sid => session&.id&.public_id 
     })
@@ -58,7 +58,7 @@ class QuestionsController < ApplicationController
   private
 
   def load_question
-    @question = Question.with_attached_files.preload(:answers).preload(:votes).find(params[:id])
+    @question = Question.with_attached_files.preload(:answers).preload(:votes).preload(:comments).preload(:links).preload(:reward).find(params[:id])
   end
 
   def question_params

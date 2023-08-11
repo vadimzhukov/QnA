@@ -37,12 +37,10 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
-
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
-
   config.include ActionCable::TestHelper
-
+  config.include ApiHelpers, type: :request
   # Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new app, browser: :chrome,

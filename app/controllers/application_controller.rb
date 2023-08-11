@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-
   rescue_from CanCan::AccessDenied do |ex|
     redirect_back(fallback_location: root_path)
     flash[:alert] = "You are not authorized to do/view this."

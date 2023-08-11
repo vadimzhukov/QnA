@@ -2,17 +2,18 @@
 
   / этот код просто ужасен :( как его можно красиво исправить?
   .votes
+    -user_votes_sum = votable.votes_sum_by_user(current_user)
     -if cannot?(:like, votable) && cannot?(:dislike, votable) && cannot?(:reset_vote, votable)
       - like_class = "hidden"
       - dislike_class = "hidden"
       - reset_like_class = "hidden"
       - reset_dislike_class = "hidden"
-    -elsif can?(:reset_vote, votable) && votable.user_liked?(current_user)
+    -elsif can?(:reset_vote, votable) && user_votes_sum > 0
       - like_class = "btn btn-link disable hidden"
       - dislike_class = "btn btn-link hidden"
       - reset_like_class = "btn btn-link"
       - reset_dislike_class = "btn btn-link hidden"
-    - elsif can?(:reset_vote, votable) && votable.user_disliked?(current_user)
+    - elsif can?(:reset_vote, votable) && user_votes_sum < 0
       - like_class = "btn btn-link hidden"
       - dislike_class = "btn btn-link hidden"
       - reset_like_class = "btn btn-link hidden"
