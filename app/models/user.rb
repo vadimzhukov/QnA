@@ -24,4 +24,8 @@ class User < ApplicationRecord
     user = User.create!(email: email, password: password)
   end
 
+  def self.subscribed(object)
+    User.select{ |user| Subscription.where("subscriptable_type = ? AND subscriptable_id = ?", 
+              object.class.to_s, object.id.to_s).pluck("user_id").include? user.id }
+  end
 end

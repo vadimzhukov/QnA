@@ -1,9 +1,10 @@
 class QuestionsController < ApplicationController
   include Voted
   include Commented
+  include Subscripted
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file, :subscribe]
   after_action :publish_question, only: [:create]
 
   load_and_authorize_resource
@@ -37,6 +38,7 @@ class QuestionsController < ApplicationController
     return unless @question.save
 
     add_files
+    subscribe_author
     redirect_to @question, notice: "The question was succesfully saved"
   end
 
@@ -72,6 +74,10 @@ class QuestionsController < ApplicationController
 
   def add_files
     @question.files.attach(params[:question][:files]) if params[:question][:files].present?
+  end
+
+  def subscribe_author
+    @question.subscriptions.create(user_id: current_user.id)
   end
 
   def publish_question

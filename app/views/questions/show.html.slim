@@ -8,6 +8,12 @@ article.card
 
     h2=@question.title
 
+    -if can? :add_subscription, @question
+      p =link_to "Subscribe", add_subscription_question_path(@question), method: :patch, class: "btn btn-success"
+    
+    -if can? :delete_subscription, @question
+      p =link_to "Unsubscribe", delete_subscription_question_path(@question), method: :delete, class: "btn btn-danger"  
+
     article.card
       .card-body.fs-3
         = @question.body

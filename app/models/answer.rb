@@ -14,11 +14,18 @@ class Answer < ApplicationRecord
   validates :body, presence: true
   validates_inclusion_of :correct, in: [true, false]
 
+  after_create :notify_about_new_answer
+
   def mark_as_best
     transaction do
       question.answers.update_all(best: false)
       update!(best: true)
       user.reward_user(question.reward)
     end
+  end
+
+  private
+  def notify_about_new_answer
+    NewAnswerNotificationJob.new.perform(self.question, self)
   end
 end

@@ -46,3 +46,4 @@ yarn-debug.log*
 .rubocop.yml
 
 /spec/examples.txt
+coverage

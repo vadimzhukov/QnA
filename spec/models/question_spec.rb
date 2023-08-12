@@ -19,4 +19,8 @@ RSpec.describe Question, type: :model do
   describe "check for commentability" do
     it_behaves_like "commentable"
   end
+
+  describe "check for subscriptability" do
+    it_behaves_like "subscriptable"
+  end
 end
