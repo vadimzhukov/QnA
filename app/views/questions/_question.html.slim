@@ -4,7 +4,7 @@
       = render "shared/errors", resource: question
     .current-content
       h2 =link_to question.title, question_path(question)
-      p 
+
       h3 =question.body 
 
       -if question.links.any?

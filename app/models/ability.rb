@@ -30,11 +30,25 @@ class Ability
     end
     can :read, :oauth_applications
     can :read, :self_profile
+    
+    can :add_subscription, Question do |subscriptable|
+      !Subscription.exists?(user, subscriptable)
+    end
+    can :delete_subscription, Question do |subscriptable|
+      Subscription.exists?(user, subscriptable)
+    end
   end
 
   def admin_permissions(user)
     user_permissions(user)
     can :manage, :all
+    
+    cannot :delete_subscription, Question do |subscriptable|
+      !Subscription.exists?(user, subscriptable)
+    end
+    cannot :add_subscription, Question do |subscriptable|
+      Subscription.exists?(user, subscriptable)
+    end
   end
-
+  
 end

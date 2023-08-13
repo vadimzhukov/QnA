@@ -1,9 +1,10 @@
 class QuestionsController < ApplicationController
   include Voted
   include Commented
+  include Subscripted
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :delete_file, :subscribe]
   after_action :publish_question, only: [:create]
 
   load_and_authorize_resource

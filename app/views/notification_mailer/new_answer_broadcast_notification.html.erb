@@ -1,0 +1,7 @@
+<p> New answer for question you subscribed </p>
+
+<p> You subscribed on question: </p>
+<h3><%=@answer.question.title%></h3>
+
+<p> New answer was posted recently: </p>
+<h5><%= link_to @answer.body, question_url(@answer.question) %></h5>

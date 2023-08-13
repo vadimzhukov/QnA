@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, lambda { |user| user.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
+  end
+
   use_doorkeeper
   root to: "questions#index"
 
@@ -23,6 +29,13 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :subscriptable do
+    member do
+      patch :add_subscription
+      delete :delete_subscription
+    end
+  end
+
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   resources :email_registrations do
@@ -31,7 +44,7 @@ Rails.application.routes.draw do
 
   resources :users
 
-  resources :questions, concerns: [:votable, :file_deletable, :commentable] do
+  resources :questions, concerns: [:votable, :file_deletable, :commentable, :subscriptable] do
     resources :answers, shallow: true, only: %i[new create edit update destroy],
                         concerns: [:votable, :file_deletable, :commentable] do
       patch :mark_as_best, on: :member
