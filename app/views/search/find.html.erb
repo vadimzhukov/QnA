@@ -1,0 +1,21 @@
+<h3> Search results: </h3>
+
+<ol>
+<% @search_results.each do |r| %>
+  <li>
+    <%= r.class %>: 
+    <% if r.class == Question %>  
+      <%= link_to r.title, polymorphic_url(r) %>
+    <% elsif r.class == Answer %>
+      <%= link_to r.body, polymorphic_url(r.question) %>
+    <% else %>
+      <%= r.body %>
+    <% end %>
+    <p><small>
+      Author: <%= r.user.email %> <br>
+      Posted: <%= r.created_at.strftime("%FT%T") %> 
+    </small></p>
+  </li>
+<% end %>
+
+</ol>
