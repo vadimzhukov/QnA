@@ -10,7 +10,7 @@ RSpec.describe Subscription, type: :model do
     let!(:user_author) { create(:user) }
     let!(:user) { create(:user) }
     let!(:question) { create(:question, user: user_author) }
-    let!(:subscription) { create(:subscription, subscriptable: question, user: user)}
+    let!(:subscription) { create(:subscription, subscriptable: question , user_id: user.id)}
 
     it "returns status of existing subscription on object for user" do
       expect(Subscription.exists?(user, question)).to be_truthy

@@ -32,10 +32,10 @@ class Ability
     can :read, :self_profile
     
     can :add_subscription, Question do |subscriptable|
-      subscriptable.subscriptions.filter{ |s| s.user_id == user.id }.empty?
+      !Subscription.exists?(user, subscriptable)
     end
     can :delete_subscription, Question do |subscriptable|
-      subscriptable.subscriptions.filter{ |s| s.user_id == user.id }.any?
+      Subscription.exists?(user, subscriptable)
     end
   end
 
@@ -44,10 +44,10 @@ class Ability
     can :manage, :all
     
     cannot :delete_subscription, Question do |subscriptable|
-      subscriptable.subscriptions.filter{ |s| s.user_id == user.id }.empty?
+      !Subscription.exists?(user, subscriptable)
     end
     cannot :add_subscription, Question do |subscriptable|
-      subscriptable.subscriptions.filter{ |s| s.user_id == user.id }.any?
+      Subscription.exists?(user, subscriptable)
     end
   end
   

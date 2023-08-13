@@ -16,6 +16,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  after_create :subscribe_author
+
   scope :created_yesterday, -> do 
     where("created_at > ? AND created_at < ?", 
     DateTime.now.beginning_of_day - 1.day, 
@@ -29,5 +31,9 @@ class Question < ApplicationRecord
 
   def not_best_answers
     answers.where(best: false)
+  end
+
+  def subscribe_author
+    self.subscriptions.create(user_id: self.user.id)
   end
 end

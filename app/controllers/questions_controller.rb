@@ -38,7 +38,6 @@ class QuestionsController < ApplicationController
     return unless @question.save
 
     add_files
-    subscribe_author
     redirect_to @question, notice: "The question was succesfully saved"
   end
 
@@ -74,10 +73,6 @@ class QuestionsController < ApplicationController
 
   def add_files
     @question.files.attach(params[:question][:files]) if params[:question][:files].present?
-  end
-
-  def subscribe_author
-    @question.subscriptions.create(user_id: current_user.id)
   end
 
   def publish_question
