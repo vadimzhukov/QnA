@@ -11,8 +11,14 @@
         <%= link_to r.title, polymorphic_url(r) %>
       <% elsif r.class == Answer %>
         <%= link_to r.body, polymorphic_url(r.question) %>
-      <% else %>
-        <%= r.body %>
+      <% else %> 
+      <%# comments have to point to parent and link to question %>
+        <%= r.body %> <br>
+        <% comment_parent_class = r.commentable_type.constantize 
+        comment_parent = comment_parent_class.find(r.commentable_id) 
+        comment_parent_question = (comment_parent_class == Question ? comment_parent : comment_parent.question)%>
+        for: <%=comment_parent_class%>:
+        <%= link_to comment_parent.body, polymorphic_url(comment_parent_question) %>
       <% end %>
       <p><small>
         Author: <%= r.user.email %> <br>
