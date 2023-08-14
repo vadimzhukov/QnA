@@ -2,9 +2,7 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
   include Subscriptable
-  ThinkingSphinx::Callbacks.append(
-    self, :behaviours => [:real_time]
-  )
+  
   belongs_to :user
   has_many :answers, dependent: :destroy
 
