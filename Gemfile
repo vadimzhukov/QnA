@@ -82,6 +82,7 @@ group :test do
   gem "selenium-webdriver"
   gem "launchy"
   gem 'simplecov', require: false
+  gem 'database_cleaner'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
