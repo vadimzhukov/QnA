@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'sphinx_helper'
 
 RSpec.describe SearchController, type: :controller do
   describe 'GET #find' do

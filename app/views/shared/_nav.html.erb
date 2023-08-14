@@ -19,8 +19,8 @@
   </ul>
 
   <%= form_with url: "/search", method: :get, class: "w-25 input-group", local: true do |form| %>
-    <%= form.text_field :query, type: "search", class: "form-control rounded", placeholder: "Search" %>
-    <%= form.select :entity, [ :all, :question, :answer, :comment ] %>
+    <%= form.text_field :search_query, type: "search", class: "form-control", placeholder: "Search" %>
+    <%= form.select :search_entity, [ :all, :questions, :answers, :comments ], class: "form-control rounded" %>
     <%= form.button "Search", class: "btn btn-primary" %>
   <% end %>
 

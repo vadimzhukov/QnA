@@ -9,9 +9,9 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     # Ensure sphinx directories exist for the test environment
-    ThinkingSphinx::Test.init
+    ThinkingSphinx::Test.config
     # Configure and start Sphinx, and automatically stop Sphinx at the end of the test suite.
-    ThinkingSphinx::Test.start
+    ThinkingSphinx::Test.start index: false
   end
 
   config.before(:each) do
@@ -21,7 +21,7 @@ RSpec.configure do |config|
   config.before(:each, sphinx: true) do
     DatabaseCleaner.strategy = :truncation
     # Index data when running an acceptance spec.
-    ThinkingSphinx::Test.index
+    # ThinkingSphinx::Test.index
   end
 
   config.before(:each) do
