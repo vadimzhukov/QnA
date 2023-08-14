@@ -2,10 +2,13 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  
 
 development:
   <<: *default
   database: qna_development
+  username: postgres
+  password: Rails.application.credentials[Rails.env.to_sym][:postgresql][:password]
 
 test:
   <<: *default

@@ -2,7 +2,7 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
   include Subscriptable
-
+  
   belongs_to :user
   has_many :answers, dependent: :destroy
 
