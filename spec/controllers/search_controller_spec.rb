@@ -11,7 +11,7 @@ RSpec.describe SearchController, type: :controller do
     end
 
     it "ThinkingSphinx receives #search with search query" do
-      allow(ThinkingSphinx).to receive(:search).with("Title")
+      expect(ThinkingSphinx).to receive(:search).with("Title")
       get :find, params: { search_query: "Title", search_entity: "all" }
     end
   end
