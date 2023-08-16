@@ -1,4 +1,4 @@
-class AddCorrectToAnswer < ActiveRecord::Migration[7.0]
+class AddCorrectToAnswer < ActiveRecord::Migration[6.1]
   def change
     add_column :answers, :correct, :boolean, null: false, default: false
   end
