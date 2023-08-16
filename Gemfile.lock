@@ -551,6 +551,7 @@ DEPENDENCIES
   rails (~> 6.1.7, >= 6.1.7.2)
   rails-controller-testing
   reek
+  rexml
   rspec-rails (~> 6.0.0)
   rubocop
   rubygems-server
