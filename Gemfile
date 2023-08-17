@@ -79,7 +79,7 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
-  gem 'capistrano3-puma', "6.0.0.beta1"
+  gem 'capistrano3-puma', "~>5.0.0"
 
 end
 
