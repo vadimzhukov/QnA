@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1.7', '>= 6.1.7.2'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
-gem 'puma'
+gem 'puma', '~>6.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -53,6 +53,7 @@ gem 'whenever', require: false
 gem 'mysql2', '~> 0.4',    :platform => :ruby
 gem 'thinking-sphinx', '~> 5.5'
 gem 'rexml'
+gem 'sd_notify'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

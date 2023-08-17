@@ -21,8 +21,6 @@ install_plugin Capistrano::SCM::Git
 install_plugin Capistrano::Puma, load_hooks: false
 install_plugin Capistrano::Puma::Systemd
 
-set :puma_service_unit_name, "puma"
-
 # Include tasks from other gems included in your Gemfile
 #
 # For documentation on these, see for example:

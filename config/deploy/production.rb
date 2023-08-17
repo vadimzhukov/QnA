@@ -6,6 +6,8 @@
 server "151.248.121.163", user: "deployer", roles: %w{app db web}, primary: true
 set :reails_env, :production
 
+set :puma_service_unit_name, "puma"
+
 # role-based syntax
 # ==================
 
