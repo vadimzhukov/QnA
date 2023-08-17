@@ -17,18 +17,6 @@ worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 #
 port ENV.fetch("PORT", 3000)
 
-# Specifies the `environment` that Puma will run in.
-#
-environment ENV.fetch("RAILS_ENV") { "development" }
-
-# Specifies the `pidfile` that Puma will use.
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
-
-# Specifies the number of `workers` to boot in clustered mode.
-# Workers are forked web server processes. If using threads and workers together
-# the concurrency of the application would be max `threads` * `workers`.
-# Workers do not work on JRuby or Windows (both of which do not support
-# processes).
 #
 # workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
@@ -41,3 +29,19 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# Specifies the `environment` that Puma will run in.
+#
+environment ENV.fetch("RAILS_ENV") { "development" }
+
+# Specifies the `pidfile` that Puma will use.
+pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+
+# Specifies the number of `workers` to boot in clustered mode.
+# Workers are forked web server processes. If using threads and workers together
+# the concurrency of the application would be max `threads` * `workers`.
+# Workers do not work on JRuby or Windows (both of which do not support
+# processes).
+# Bind unix domain socket
+bind ENV.fetch('PUMA_SOCK') { 'unix://home/deployer/qna/shared/sockets/puma.sock' }
+activate_control_app ENV.fetch('PUMACTL_SOCK') { 'unix://home/deployer/qna/shared/sockets/pumactl.sock' }

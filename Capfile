@@ -19,7 +19,6 @@ require "capistrano/puma"
 require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
 install_plugin Capistrano::Puma, load_hooks: false
-install_plugin Capistrano::Puma::Nginx
 install_plugin Capistrano::Puma::Systemd
 
 # Include tasks from other gems included in your Gemfile
