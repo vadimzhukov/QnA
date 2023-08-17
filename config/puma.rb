@@ -43,4 +43,3 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 # Bind unix domain socket
-bind ENV.fetch('PUMA_SOCK') { 'unix://home/deployer/qna/shared/tmp/sockets/puma.sock' }
