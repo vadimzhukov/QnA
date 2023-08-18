@@ -63,8 +63,10 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "qna_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { host: '151.248.121.163', port: 80 }
+  config.action_mailer.default_options = { from: "vadim.zhukov@gmail.com", reply_to: "vadim.zhukov@gmail.com"}
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: '151.248.121.163', port: 3000 }
+  
   # SMTP settings for gmail
   config.action_mailer.smtp_settings = {
     :address              => "smtp.gmail.com",
