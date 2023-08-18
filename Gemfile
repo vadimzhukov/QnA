@@ -85,6 +85,7 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano3-puma', '6.0.0beta1', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano-rails-console', require: false
 
 end
 
