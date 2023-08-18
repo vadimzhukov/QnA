@@ -4,6 +4,7 @@ lock "~> 3.17.3"
 set :application, "qna"
 set :repo_url, "git@github.com:vadimzhukov/QnA.git"
 
+
 set :branch, "main"
 
 set :deploy_to, "/home/deployer/qna"
@@ -13,9 +14,6 @@ append :linked_files, "config/database.yml", 'config/master.key'
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
-
-set :whenever_identifier,  ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
-set :whenever_command,     ->{ "cd #{fetch(:release_path)} && bundle exec whenever" }
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -28,3 +26,6 @@ set :whenever_command,     ->{ "cd #{fetch(:release_path)} && bundle exec whenev
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
+
+
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
