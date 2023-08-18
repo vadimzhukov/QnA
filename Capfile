@@ -3,7 +3,7 @@ require "capistrano/setup"
 
 # Include default deployment tasksч
 require "capistrano/deploy"
-require "capistrano/rvm"
+require "capistrano/rbenv"
 require "capistrano/bundler"
 require "capistrano/rails"
 require "capistrano/puma"
