@@ -119,7 +119,6 @@ GEM
       xpath (~> 3.2)
     case_transform (0.2)
       activesupport
-    chronic (0.10.2)
     cocoon (1.2.15)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
@@ -508,8 +507,6 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    whenever (1.0.0)
-      chronic (>= 0.6.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.11)
@@ -580,7 +577,6 @@ DEPENDENCIES
   validate_url
   web-console (>= 4.1.0)
   webpacker
-  whenever
 
 RUBY VERSION
    ruby 3.1.3p185

@@ -49,7 +49,6 @@ gem 'oj'
 gem 'reek'
 gem 'sidekiq'
 gem 'sinatra', require: false
-gem 'whenever'
 gem 'mysql2', '~> 0.4',    :platform => :ruby
 gem 'thinking-sphinx', '~> 5.5'
 gem 'rexml'
