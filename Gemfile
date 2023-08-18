@@ -54,7 +54,8 @@ gem 'mysql2', '~> 0.4',    :platform => :ruby
 gem 'thinking-sphinx', '~> 5.5'
 gem 'rexml'
 gem 'sd_notify'
-gem 'bundle'
+gem 'redis'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
