@@ -28,4 +28,4 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
 # set :ssh_options, verify_host_key: :secure
 
 
-set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+set :whenever_path, "/home/deployer/qna/current"

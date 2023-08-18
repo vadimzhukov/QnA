@@ -353,8 +353,7 @@ GEM
       ffi (~> 1.0)
     red-colors (0.3.0)
       matrix
-    redis (5.0.7)
-      redis-client (>= 0.9.0)
+    redis (4.8.1)
     redis-client (0.15.0)
       connection_pool
     reek (6.1.4)
@@ -561,7 +560,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.7, >= 6.1.7.2)
   rails-controller-testing
-  redis
+  redis (~> 4.0)
   reek
   rexml
   rspec-rails (~> 6.0.0)

@@ -54,7 +54,7 @@ gem 'mysql2', '~> 0.4',    :platform => :ruby
 gem 'thinking-sphinx', '~> 5.5'
 gem 'rexml'
 gem 'sd_notify'
-gem 'redis'
+gem 'redis', '~> 4.0'
 gem 'bundle'
 
 

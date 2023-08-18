@@ -10,9 +10,6 @@ require "capistrano/puma"
 require "capistrano/sidekiq"
 require "thinking_sphinx/capistrano"
 
-set :whenever_command, "bundle exec whenever"
-
-require "whenever/capistrano"
 
 # Load the SCM plugin appropriate to your project:
 #
@@ -26,6 +23,9 @@ require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
 install_plugin Capistrano::Puma, load_hooks: false
 install_plugin Capistrano::Puma::Systemd
+install_plugin Capistrano::Sidekiq
+install_plugin Capistrano::Sidekiq::Systemd
+
 
 # Include tasks from other gems included in your Gemfile
 #
