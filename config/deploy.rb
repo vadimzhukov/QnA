@@ -14,6 +14,9 @@ append :linked_files, "config/database.yml", 'config/master.key'
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
 
+set :whenever_identifier,  ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+set :whenever_command,     ->{ "cd #{fetch(:release_path)} && bundle exec whenever" }
+
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
