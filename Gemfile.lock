@@ -531,8 +531,8 @@ DEPENDENCIES
   bundle
   byebug
   cancancan
-  capistrano (~> 3.6)
-  capistrano-bundler (~> 2.0)
+  capistrano
+  capistrano-bundler
   capistrano-rails
   capistrano-rails-console
   capistrano-rbenv
