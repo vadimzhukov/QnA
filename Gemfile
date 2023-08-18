@@ -55,6 +55,7 @@ gem 'thinking-sphinx', '~> 5.5'
 gem 'rexml'
 gem 'sd_notify'
 gem 'redis'
+gem 'bundle'
 
 
 group :development, :test do
