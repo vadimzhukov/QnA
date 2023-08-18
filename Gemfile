@@ -79,8 +79,8 @@ group :development do
   gem 'spring'
   gem "rubocop"
   gem 'pry'
-  gem 'capistrano', require: false
-  gem 'capistrano-bundler', require: false
+  gem 'capistrano', '~> 3.6', require: false
+  gem 'capistrano-bundler', '~> 2.0', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano3-puma', '6.0.0beta1', require: false
