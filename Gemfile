@@ -77,13 +77,13 @@ group :development do
   gem 'spring'
   gem "rubocop"
   gem 'pry'
-  gem 'capistrano', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-rbenv', require: false
-  gem 'capistrano3-puma', '6.0.0beta1', require: false
-  gem 'capistrano-sidekiq', require: false
-  gem 'capistrano-rails-console', require: false
+  gem 'capistrano', '~> 3.9'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv', '~> 2.2'
+  gem 'capistrano3-puma', '~>6.0.0beta1'
+  gem 'capistrano-sidekiq'
+  gem 'capistrano-rails-console'
 
 end
 
