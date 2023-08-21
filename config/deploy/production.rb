@@ -8,6 +8,8 @@ set :reails_env, :production
 
 set :puma_service_unit_name, "puma"
 
+set :sidekiq_pid, '/home/deployer/qna/shared/tmp/pids/sidekiq.pid'
+
 # role-based syntax
 # ==================
 
@@ -59,3 +61,4 @@ set :puma_service_unit_name, "puma"
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
