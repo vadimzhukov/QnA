@@ -24,6 +24,7 @@ class User < ApplicationRecord
     user = User.new(email: email, password: password)
     user.skip_confirmation!
     user.save!
+    user
   end
 
   def self.subscribed(object)
