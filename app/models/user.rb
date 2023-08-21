@@ -21,7 +21,9 @@ class User < ApplicationRecord
 
   def self.create_by_email(email)
     password = Devise.friendly_token[0, 10]
-    user = User.create!(email: email, password: password)
+    user = User.new(email: email, password: password)
+    user.skip_confirmation!
+    user.save!
   end
 
   def self.subscribed(object)
