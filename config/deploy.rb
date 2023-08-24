@@ -16,7 +16,7 @@ set :branch, "main"
 set :deploy_to, "/home/deployer/qna"
 set :deply_user, "deployer"
 
-append :linked_files, "config/database.yml", 'config/master.key'
+append :linked_files, "config/database.yml", "config/master.key", "config/schedule.rb"
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"

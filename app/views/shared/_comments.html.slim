@@ -2,14 +2,15 @@
   h6 Comments:
   - if resource.comments.any?
     - resource.comments.each do |comment|
-      .card.mt-3
-        .card-body id="comment-#{comment.id}"
-          div.comment-date.mb-1.text-end.text-secondary.small
-            =comment.created_at
-          div.comment-body.mb-1
-            =comment.body
-          div.comment-author.text-end.text-secondary.small
-            =comment.user.email
+      -cache comment do
+        .card.mt-3
+          .card-body id="comment-#{comment.id}"
+            div.comment-date.mb-1.text-end.text-secondary.small
+              =comment.created_at
+            div.comment-body.mb-1
+              =comment.body
+            div.comment-author.text-end.text-secondary.small
+              =comment.user.email
           
 - if user_signed_in?
   = link_to "Comment it", "#", class: "comment-button btn btn-primary", id: resource.id

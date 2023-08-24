@@ -2,68 +2,69 @@
 
 gon.push { question_id: @question.id }
 
-article.card
-  .card-body
-    h5.text-center Question ##{@question.id}
+- cache @question do
+  article.card
+    .card-body
+      h5.text-center Question ##{@question.id}
 
-    h2=@question.title
-    
-    -if can? :add_subscription, @question
-      p =link_to "Subscribe", add_subscription_question_path(@question), method: :patch, class: "btn btn-success"
+      h2=@question.title
       
-    -if can? :delete_subscription, @question
-      p =link_to "Unsubscribe", delete_subscription_question_path(@question), method: :delete, class: "btn btn-danger"  
+      -if can? :add_subscription, @question
+        p =link_to "Subscribe", add_subscription_question_path(@question), method: :patch, class: "btn btn-success"
+        
+      -if can? :delete_subscription, @question
+        p =link_to "Unsubscribe", delete_subscription_question_path(@question), method: :delete, class: "btn btn-danger"  
 
-    article.card
-      .card-body.fs-3
-        = @question.body
+      article.card
+        .card-body.fs-3
+          = @question.body
 
-    -if @question.files.attached?
-      h6.mt-3 Files of question:
-      -@question.files.each do |file| 
-        p
-          span class="d-inline-block text-truncate" style="max-width: 200px;"
-            =link_to file.filename, url_for(file)
+      -if @question.files.attached?
+        h6.mt-3 Files of question:
+        -@question.files.each do |file| 
+          p
+            span class="d-inline-block text-truncate" style="max-width: 200px;"
+              =link_to file.filename, url_for(file)
 
-    -if @question.links.any?
-      h6.mt-3 Links of question:
-      .question-links
-        -@question.links.each do |link|
-          =render "shared/link_with_gist_preview", link: link
+      -if @question.links.any?
+        h6.mt-3 Links of question:
+        .question-links
+          -@question.links.each do |link|
+            =render "shared/link_with_gist_preview", link: link
 
-    -if @question.answers.any?
-      .answers-list
-        -if @question.best_answer 
-          .best-answer
-            h4.mt-3.text-center Best answer
-            =render partial: 'answers/answer', collection: [@question.best_answer], locals: {best_answer: true}
+      -if @question.answers.any?
+        .answers-list
+          -if @question.best_answer 
+            .best-answer
+              h4.mt-3.text-center Best answer
+              =render partial: 'answers/answer', collection: [@question.best_answer], locals: {best_answer: true}
 
-        h4.mt-3.text-center Answers to the question:
-        =render partial: 'answers/answer', collection: @question.not_best_answers.order(:id), locals: {best_answer: false}
+          h4.mt-3.text-center Answers to the question:
+          =render partial: 'answers/answer', collection: @question.not_best_answers.order(:id), locals: {best_answer: false}, cached: true
 
-    .answer-errors
-      = render 'shared/errors', resource: @answer
+      .answer-errors
+        = render 'shared/errors', resource: @answer
 
-    / -if user_signed_in?
-    -if can? :create, Answer
-      .card.mt-3 style="background-color: #e9ecef;"
-        .card-body.mx-3
-          h3.mt-3.text-center Submit your answer
-          
-          =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
-            .form-group
-              .field
-                =f.label "New answer:"
-                =f.text_area :body, class: "form-control"
-              .field
-                =f.label :files
-                =f.file_field :files, multiple: true, class: "form-control"
-              h5.mt-3 Links for answer:
-              #links 
-                =f.fields_for :links do |link|
-                  =render "link_fields", f: link, class: "form-control"
-                .links.mt-3 
-                  =link_to_add_association "add link", f, :links
-            .mt-3    
-            =f.submit "Submit answer", class: "btn btn-success"
+      / -if user_signed_in?
+      -if can? :create, Answer
+        .card.mt-3 style="background-color: #e9ecef;"
+          .card-body.mx-3
+            h3.mt-3.text-center Submit your answer
+            
+            =form_with model: [@question, @answer], class: "new-answer", remote: true do |f|
+              .form-group
+                .field
+                  =f.label "New answer:"
+                  =f.text_area :body, class: "form-control"
+                .field
+                  =f.label :files
+                  =f.file_field :files, multiple: true, class: "form-control"
+                h5.mt-3 Links for answer:
+                #links 
+                  =f.fields_for :links do |link|
+                    =render "link_fields", f: link, class: "form-control"
+                  .links.mt-3 
+                    =link_to_add_association "add link", f, :links
+              .mt-3    
+              =f.submit "Submit answer", class: "btn btn-success"
           

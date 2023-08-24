@@ -7,6 +7,8 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 
-1000.times do |n|
-  Question.create(title:"Question #{n} title", body: "Question #{n} body", user_id: User.second)
+Question.first.answers.each do |answer|
+  15.times do |n|
+    answer.comments.create(body: "Comment #{n} for answer #{answer.id}", user_id: 1)
+  end
 end
