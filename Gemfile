@@ -56,6 +56,7 @@ gem 'rexml'
 gem 'sd_notify'
 gem 'redis', '~> 4.0'
 gem 'redis-rails'
+gem 'dalli'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
