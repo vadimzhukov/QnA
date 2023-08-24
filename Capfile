@@ -9,7 +9,6 @@ require "capistrano/rails"
 require "capistrano/puma"
 require "capistrano/sidekiq"
 require "thinking_sphinx/capistrano"
-require "whenever/capistrano"
 require 'capistrano/rails/console'
 
 
